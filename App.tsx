@@ -173,23 +173,23 @@ const LandingPage: React.FC<{
             </ScrollReveal>
 
             <ScrollReveal delay={300}>
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+              <div className="flex flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2">
                 <button 
                   onClick={onNavigateSubmission}
-                  className="group relative px-10 py-5 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-[0_15px_40px_rgba(37,99,235,0.25)] active:scale-95 transition-all overflow-hidden"
+                  className="flex-1 sm:flex-none group relative px-4 sm:px-10 py-4 sm:py-5 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] shadow-[0_15px_40px_rgba(37,99,235,0.25)] active:scale-95 transition-all overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:animate-shimmer"></div>
-                  <span className="relative flex items-center">
+                  <span className="relative flex items-center justify-center">
                     Submit Idea
-                    <svg className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                    <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-2 sm:ml-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                   </span>
                 </button>
                 
                 <button 
                   onClick={onNavigateTracking}
-                  className="px-8 py-5 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] border border-slate-200 dark:border-slate-800 active:scale-95 transition-all shadow-sm"
+                  className="flex-1 sm:flex-none px-4 sm:px-8 py-4 sm:py-5 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] border border-slate-200 dark:border-slate-800 active:scale-95 transition-all shadow-sm whitespace-nowrap"
                 >
-                  Track My Ideas
+                  Track Ideas
                 </button>
               </div>
             </ScrollReveal>
@@ -491,7 +491,7 @@ const LandingPage: React.FC<{
               { step: "04", label: "Scale", title: "Implementation", desc: "Enterprise-wide deployment and continuous value monitoring.", icon: "M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" }
             ].map((cycle, idx) => (
               <ScrollReveal key={idx} delay={idx * 150} className="relative">
-                <div className="space-y-6 group">
+                <div className="space-y-6 group flex flex-col items-center text-center md:items-start md:text-left">
                   <div className="w-24 h-24 bg-slate-800 rounded-[2rem] border border-white/5 flex items-center justify-center text-blue-500 shadow-2xl relative overflow-hidden transition-all duration-500 group-hover:scale-110 group-hover:bg-slate-700">
                     <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/10 transition-colors"></div>
                     <svg className="w-10 h-10 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={cycle.icon} /></svg>
