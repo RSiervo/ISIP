@@ -5,10 +5,13 @@ import { GoogleGenAI, Type } from "@google/genai";
 // Always use a named parameter and obtain the API key exclusively from process.env.API_KEY.
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
+// Standardized on 'gemini-3-flash-preview' for high-speed, free-tier friendly performance.
+const TEXT_MODEL = "gemini-3-flash-preview";
+
 export async function analyzeSuggestion(message: string): Promise<{ category: string, sentiment: string }> {
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: TEXT_MODEL,
       contents: `Analyze the following employee suggestion for 'ISIP'. 
       Categorize it (e.g., Workplace Environment, IT/Systems, Operations, Benefits, Culture) 
       and determine the sentiment (Positive, Neutral, Negative, or Urgent).
@@ -37,9 +40,9 @@ export async function analyzeSuggestion(message: string): Promise<{ category: st
 
 export async function evaluateIdea(title: string, description: string, complexity: string, painPoint: string): Promise<{ impactScore: number, feasibilityScore: number }> {
   try {
-    // Upgraded to gemini-3-pro-preview for advanced reasoning and evaluation tasks.
+    // Using gemini-3-flash-preview for high-efficiency evaluation.
     const response = await ai.models.generateContent({
-      model: "gemini-3-pro-preview",
+      model: TEXT_MODEL,
       contents: `You are an expert innovation consultant for TIM (Total Information Management). 
       Evaluate the following employee suggestion based on its title, description, complexity, and pain point.
       
@@ -78,9 +81,9 @@ export async function evaluateIdea(title: string, description: string, complexit
 
 export async function getComplexityReasoning(title: string, description: string, complexity: string): Promise<string> {
   try {
-    // Upgraded to gemini-3-pro-preview for complex architectural reasoning.
+    // Using gemini-3-flash-preview for rapid architectural reasoning.
     const response = await ai.models.generateContent({
-      model: "gemini-3-pro-preview",
+      model: TEXT_MODEL,
       contents: `As an innovation architect, analyze this idea and explain why it is classified as "${complexity}" complexity. 
       Identify potential technical dependencies, cross-departmental coordination, or resource requirements.
       Keep the explanation concise (2-3 sentences max) and professional.
