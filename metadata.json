@@ -1,0 +1,5 @@
+{
+  "name": "ISIP Suggestion Box",
+  "description": "A professional employee suggestion portal for ISIP with AI-powered sentiment analysis and admin export capabilities.",
+  "requestFramePermissions": []
+}
