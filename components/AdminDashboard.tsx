@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { storageService } from '../services/storageService';
 import { Idea, IdeaStatus } from '../types';
 import { jsPDF } from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 
 interface AdminDashboardProps {
   onLogout: () => void;
@@ -202,7 +202,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
       orientation: 'landscape',
       unit: 'mm',
       format: 'a4'
-    }) as any;
+    });
 
     doc.setFontSize(18);
     doc.setTextColor(30, 64, 175);
@@ -224,7 +224,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
       `Description: ${i.description}\nPain Point: ${i.painPoint}\nBeneficiaries: ${i.beneficiaries}`
     ]);
 
-    doc.autoTable({
+    autoTable(doc, {
       head: [uniformHeaders],
       body: tableData,
       startY: 30,
@@ -232,14 +232,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
       headStyles: { fillColor: [37, 99, 235], halign: 'center', fontSize: 7, fontStyle: 'bold' },
       styles: { fontSize: 6, halign: 'center', cellPadding: 2, overflow: 'linebreak' },
       columnStyles: { 
-        1: { halign: 'left', width: 25 },
-        6: { width: 20 },
-        7: { halign: 'left', width: 25 },
-        8: { halign: 'left', width: 35 },
-        9: { halign: 'left', width: 60 }
+        // Fix: Replace 'width' with 'cellWidth' as per jspdf-autotable documentation
+        1: { halign: 'left', cellWidth: 25 },
+        6: { cellWidth: 20 },
+        7: { halign: 'left', cellWidth: 25 },
+        8: { halign: 'left', cellWidth: 35 },
+        9: { halign: 'left', cellWidth: 60 }
       },
       margin: { top: 30, bottom: 20, left: 10, right: 10 },
-      didDrawPage: (data: any) => {
+      didDrawPage: (data) => {
         doc.setFontSize(8);
         doc.text(`Page ${data.pageNumber}`, 280, 200, { align: 'right' });
       }
@@ -310,7 +311,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
       orientation: 'portrait',
       unit: 'mm',
       format: 'a4'
-    }) as any;
+    });
     const i = selectedIdea;
 
     doc.setFontSize(20);
@@ -339,12 +340,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
       ["Admin Assessment", i.internalNotes || "No assessment notes recorded."]
     ];
 
-    doc.autoTable({
+    autoTable(doc, {
       body: data,
       startY: 35,
       theme: 'grid',
       styles: { fontSize: 9, cellPadding: 4, overflow: 'linebreak' },
-      columnStyles: { 0: { fontStyle: 'bold', fillColor: [241, 245, 249], width: 50 } },
+      // Fix: Replace 'width' with 'cellWidth'
+      columnStyles: { 0: { fontStyle: 'bold', fillColor: [241, 245, 249], cellWidth: 50 } },
       margin: { top: 35, bottom: 20, left: 20, right: 20 }
     });
 
@@ -473,9 +475,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   };
 
   const statCards = [
-    { label: 'Repository', subLabel: 'Total Submissions', val: stats.total, color: 'blue', icon: <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>, bgClass: 'bg-blue-50 dark:bg-blue-500/10', iconClass: 'text-blue-600 dark:text-blue-500 border-blue-500/20', borderClass: 'border-blue-100 dark:border-blue-900/50' },
+    { label: 'Repository', subLabel: 'Total Submissions', val: stats.total, color: 'blue', icon: <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 v2M7 7h10" /></svg>, bgClass: 'bg-blue-50 dark:bg-blue-500/10', iconClass: 'text-blue-600 dark:text-blue-500 border-blue-500/20', borderClass: 'border-blue-100 dark:border-blue-900/50' },
     { label: 'Queue', subLabel: 'Pending Review', val: stats.byStatus.Review, color: 'amber', icon: <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, bgClass: 'bg-amber-50 dark:bg-amber-500/10', iconClass: 'text-amber-600 dark:text-amber-500 border-amber-500/20', borderClass: 'border-amber-100 dark:border-amber-900/50' },
-    { label: 'Lab', subLabel: 'Active Pilots', val: stats.byStatus.Pilot, color: 'indigo', icon: <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.675.337a4 4 0 01-1.778.417H7.5a2 2 0 01-2-2V10a2 2 0 012-2h1.5a2 2 0 002-2V4.5a2 2 0 114 0V6a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 01-2 2h-1.572" /></svg>, bgClass: 'bg-indigo-50 dark:bg-indigo-500/10', iconClass: 'text-indigo-600 dark:text-indigo-400 border-indigo-500/20', borderClass: 'border-indigo-100 dark:border-indigo-900/50' },
+    { label: 'Lab', subLabel: 'Active Pilots', val: stats.byStatus.Pilot, color: 'indigo', icon: <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.675.337a4 4 0 01-1.778.417H7.5a2 2 0 01-2-2V10a2 2 0 012-2h1.5a2 2 0 012-2h1.5a2 2 0 002-2V4.5a2 2 0 114 0V6a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 01-2 2h-1.572" /></svg>, bgClass: 'bg-indigo-50 dark:bg-indigo-500/10', iconClass: 'text-indigo-600 dark:text-indigo-400 border-indigo-500/20', borderClass: 'border-indigo-100 dark:border-indigo-900/50' },
     { label: 'Success', subLabel: 'Implemented Ideas', val: stats.byStatus.Implemented, color: 'emerald', icon: <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, bgClass: 'bg-emerald-50 dark:bg-emerald-500/10', iconClass: 'text-emerald-600 dark:text-emerald-500 border-emerald-500/20', borderClass: 'border-emerald-100 dark:border-emerald-900/50' },
   ];
 
@@ -551,7 +553,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   onChange={e => setSearchTerm(e.target.value)}
                   className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl sm:rounded-2xl px-10 sm:px-12 py-2 sm:py-3 text-xs sm:text-sm font-bold text-slate-900 dark:text-white outline-none focus:border-blue-500 transition-all shadow-inner"
                 />
-                <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
               </div>
               <select
                 value={filter}

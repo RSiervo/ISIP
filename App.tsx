@@ -640,10 +640,10 @@ const App: React.FC = () => {
       onNavigateSettings={() => setView('USER_MANAGEMENT')}
     >
       <div className={view === 'LANDING' ? 'w-full' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12'}>
-        {/* Global Notification Banner - Centered on Mobile and Desktop */}
+        {/* Global Notification Banner - Perfectly Centered and Fully Visible on Mobile */}
         {globalNotification && (
-          <div className="fixed top-4 left-4 right-4 sm:left-1/2 sm:right-auto sm:w-full sm:max-w-lg sm:-translate-x-1/2 z-[200] animate-fade-in">
-            <div className={`flex items-center space-x-4 px-4 sm:px-6 py-4 rounded-2xl shadow-2xl border backdrop-blur-xl ${globalNotification.type === 'success' ? 'bg-emerald-500/90 border-emerald-400 text-white' : 'bg-blue-600/90 border-blue-400 text-white'}`}>
+          <div className="fixed top-4 inset-x-4 sm:left-1/2 sm:right-auto sm:w-full sm:max-w-lg sm:-translate-x-1/2 z-[200] animate-fade-in">
+            <div className={`flex items-center space-x-4 px-5 py-4 rounded-2xl shadow-2xl border backdrop-blur-xl flex-nowrap ${globalNotification.type === 'success' ? 'bg-emerald-500/95 border-emerald-400 text-white' : 'bg-blue-600/95 border-blue-400 text-white'}`}>
               <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
                 {globalNotification.type === 'success' ? (
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
@@ -652,7 +652,7 @@ const App: React.FC = () => {
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[9px] sm:text-xs font-black uppercase tracking-widest leading-tight break-words text-center sm:text-left">
+                <p className="text-[10px] sm:text-xs font-black uppercase tracking-widest leading-tight break-words text-center sm:text-left">
                   {globalNotification.message}
                 </p>
               </div>

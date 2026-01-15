@@ -1,18 +1,11 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
 
-// Access the injected API Key. 
-// Vite will replace 'process.env.API_KEY' with the actual string during build.
-const API_KEY = process.env.API_KEY || "";
-
-const ai = new GoogleGenAI({ apiKey: API_KEY });
+// Initialize the Google GenAI client using the required pattern.
+// Always use a named parameter and obtain the API key exclusively from process.env.API_KEY.
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export async function analyzeSuggestion(message: string): Promise<{ category: string, sentiment: string }> {
-  if (!API_KEY) {
-    console.warn("Gemini API Key is missing. Analysis skipped.");
-    return { category: "General", sentiment: "Neutral" };
-  }
-  
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
@@ -43,13 +36,10 @@ export async function analyzeSuggestion(message: string): Promise<{ category: st
 }
 
 export async function evaluateIdea(title: string, description: string, complexity: string, painPoint: string): Promise<{ impactScore: number, feasibilityScore: number }> {
-  if (!API_KEY) {
-    return { impactScore: 5, feasibilityScore: 5 };
-  }
-
   try {
+    // Upgraded to gemini-3-pro-preview for advanced reasoning and evaluation tasks.
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: "gemini-3-pro-preview",
       contents: `You are an expert innovation consultant for TIM (Total Information Management). 
       Evaluate the following employee suggestion based on its title, description, complexity, and pain point.
       
@@ -87,11 +77,10 @@ export async function evaluateIdea(title: string, description: string, complexit
 }
 
 export async function getComplexityReasoning(title: string, description: string, complexity: string): Promise<string> {
-  if (!API_KEY) return "Complexity evaluation currently unavailable.";
-
   try {
+    // Upgraded to gemini-3-pro-preview for complex architectural reasoning.
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: "gemini-3-pro-preview",
       contents: `As an innovation architect, analyze this idea and explain why it is classified as "${complexity}" complexity. 
       Identify potential technical dependencies, cross-departmental coordination, or resource requirements.
       Keep the explanation concise (2-3 sentences max) and professional.
