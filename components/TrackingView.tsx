@@ -104,14 +104,14 @@ const TrackingView: React.FC<TrackingViewProps> = ({ onBack }) => {
         </div>
       )}
 
-      <div className="mb-12 flex items-center justify-between">
+      <div className="mb-8 sm:mb-12 flex flex-col sm:flex-row sm:items-center justify-between gap-6 px-2">
         <div className="space-y-2">
-          <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">Track Your Idea</h1>
+          <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">Track Your Idea</h1>
           <p className="text-[10px] text-slate-500 dark:text-slate-500 font-bold uppercase tracking-widest">Innovation Monitoring Node</p>
         </div>
         <button 
           onClick={onBack}
-          className="px-6 py-3 bg-white dark:bg-slate-900 text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-2xl font-black text-[10px] uppercase tracking-widest border border-slate-200 dark:border-slate-800 transition-all flex items-center space-x-3 shadow-sm active:scale-95"
+          className="w-full sm:w-auto px-6 py-3.5 bg-white dark:bg-slate-900 text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-2xl font-black text-[10px] uppercase tracking-widest border border-slate-200 dark:border-slate-800 transition-all flex items-center justify-center space-x-3 shadow-sm active:scale-95"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
           <span>Exit Tracking</span>
