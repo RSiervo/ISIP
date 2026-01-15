@@ -225,7 +225,7 @@ const Layout: React.FC<LayoutProps> = ({ children, role, onRoleToggle, onNavigat
                 </button>
 
                 {showNotifications && (
-                  <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-white dark:bg-slate-900 backdrop-blur-xl border border-slate-100 dark:border-slate-800 rounded-2xl shadow-2xl z-[100] overflow-hidden animate-fade-in flex flex-col max-h-[480px]">
+                  <div className="fixed sm:absolute top-[70px] sm:top-full left-4 right-4 sm:left-auto sm:right-0 mt-3 sm:mt-3 sm:w-96 bg-white dark:bg-slate-900 backdrop-blur-xl border border-slate-100 dark:border-slate-800 rounded-2xl shadow-2xl z-[100] overflow-hidden animate-fade-in flex flex-col max-h-[calc(100vh-100px)] sm:max-h-[480px]">
                     <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-950/50">
                       <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-900 dark:text-white">Alert Console</h4>
                       {unreadIdeas.length > 0 && (

@@ -642,18 +642,20 @@ const App: React.FC = () => {
       <div className={view === 'LANDING' ? 'w-full' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12'}>
         {/* Global Notification Banner at top */}
         {globalNotification && (
-          <div className="fixed top-20 sm:top-24 left-1/2 -translate-x-1/2 z-[200] w-full max-w-lg px-4 animate-slide-left">
-            <div className={`flex items-center space-x-4 px-6 py-4 rounded-2xl shadow-2xl border backdrop-blur-xl ${globalNotification.type === 'success' ? 'bg-emerald-500/90 border-emerald-400 text-white' : 'bg-blue-600/90 border-blue-400 text-white'}`}>
-              <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+          <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[200] w-[calc(100%-2rem)] max-w-lg px-0 animate-slide-left">
+            <div className={`flex items-start sm:items-center space-x-3 sm:space-x-4 px-4 sm:px-6 py-4 rounded-2xl shadow-2xl border backdrop-blur-xl flex-wrap ${globalNotification.type === 'success' ? 'bg-emerald-500/90 border-emerald-400 text-white' : 'bg-blue-600/90 border-blue-400 text-white'}`}>
+              <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
                 {globalNotification.type === 'success' ? (
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                 ) : (
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 )}
               </div>
-              <p className="text-xs font-black uppercase tracking-widest flex-grow">{globalNotification.message}</p>
-              <button onClick={() => setGlobalNotification(null)} className="text-white/60 hover:text-white transition-colors">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
+              <p className="text-[10px] sm:text-xs font-black uppercase tracking-widest flex-grow break-words pr-2">
+                {globalNotification.message}
+              </p>
+              <button onClick={() => setGlobalNotification(null)} className="text-white/60 hover:text-white transition-colors flex-shrink-0">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
           </div>
@@ -676,22 +678,22 @@ const App: React.FC = () => {
       {/* Success full-screen loading overlay */}
       {isLoginSuccess && (
         <div className="fixed inset-0 z-[300] flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-xl animate-fade-in">
-          <div className="text-center space-y-10">
-            <div className="relative w-32 h-32 mx-auto">
-              <div className="absolute inset-0 border-4 border-slate-800 rounded-[2rem] opacity-20"></div>
-              <div className="absolute inset-0 border-t-4 border-blue-500 rounded-[2rem] animate-spin"></div>
+          <div className="text-center space-y-8 sm:space-y-10 w-full max-w-xs">
+            <div className="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto">
+              <div className="absolute inset-0 border-4 border-slate-800 rounded-[1.5rem] sm:rounded-[2rem] opacity-20"></div>
+              <div className="absolute inset-0 border-t-4 border-blue-500 rounded-[1.5rem] sm:rounded-[2rem] animate-spin"></div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <svg className="w-10 h-10 text-blue-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 sm:w-10 sm:h-10 text-blue-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               </div>
             </div>
             <div className="space-y-4">
-              <p className="text-2xl font-black text-white tracking-tight uppercase">System Authorization</p>
-              <div className="h-1 w-48 bg-slate-800 rounded-full mx-auto overflow-hidden">
+              <p className="text-xl sm:text-2xl font-black text-white tracking-tight uppercase">Authorization</p>
+              <div className="h-1 w-32 sm:w-48 bg-slate-800 rounded-full mx-auto overflow-hidden">
                 <div className="h-full bg-blue-500 animate-grow-width"></div>
               </div>
-              <p className="text-[10px] font-black text-blue-400 uppercase tracking-[0.4em] h-4">
+              <p className="text-[8px] sm:text-[10px] font-black text-blue-400 uppercase tracking-[0.3em] sm:tracking-[0.4em] h-4">
                 {LOGIN_LOADING_MESSAGES[loadingTextIndex]}
               </p>
             </div>
