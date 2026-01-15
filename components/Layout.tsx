@@ -180,7 +180,7 @@ const Layout: React.FC<LayoutProps> = ({ children, role, onRoleToggle, onNavigat
   };
 
   return (
-    <div className="min-h-screen flex flex-col transition-colors duration-300">
+    <div className="min-h-screen flex flex-col transition-colors duration-300 overflow-x-hidden">
       <header className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-100 dark:border-slate-800 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
           <div className="flex items-center space-x-4 group cursor-pointer overflow-hidden" onClick={onNavigateHome || (() => window.location.reload())}>
@@ -337,9 +337,7 @@ const Layout: React.FC<LayoutProps> = ({ children, role, onRoleToggle, onNavigat
       </header>
 
       <main className="flex-grow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {children}
-        </div>
+        {children}
       </main>
 
       <footer className="bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 transition-colors duration-300 relative overflow-hidden">

@@ -136,7 +136,7 @@ const LandingPage: React.FC<{
   };
 
   return (
-    <div className="space-y-0 pb-0 -mx-4 sm:-mx-6 lg:-mx-8">
+    <div className="space-y-0 pb-0 overflow-x-hidden">
       {/* Hero Section - Snapped to header */}
       <section className="relative pt-12 lg:pt-24 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-b from-blue-50/80 via-white to-slate-50 dark:from-slate-950 dark:via-slate-950 dark:to-slate-950 transition-colors duration-500">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-400/10 rounded-full blur-[120px] -mr-64 -mt-32 dark:hidden"></div>
@@ -273,7 +273,7 @@ const LandingPage: React.FC<{
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
                   { label: "Token Based", val: "Secure ID Tracking", icon: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" },
-                  { label: "Status Mapping", val: "Real-time Lifecycle", icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" }
+                  { label: "Status Mapping", val: "Real-time Lifecycle", icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" }
                 ].map((feat, i) => (
                   <div key={i} className="p-6 bg-white/5 border border-white/10 rounded-3xl group hover:bg-white/10 transition-colors">
                     <div className="w-10 h-10 bg-blue-500/20 text-blue-400 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -639,7 +639,7 @@ const App: React.FC = () => {
       onNavigateHome={() => setView('LANDING')}
       onNavigateSettings={() => setView('USER_MANAGEMENT')}
     >
-      <div className={view === 'LANDING' ? '' : 'py-8 sm:py-12'}>
+      <div className={view === 'LANDING' ? 'w-full' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12'}>
         {/* Global Notification Banner at top */}
         {globalNotification && (
           <div className="fixed top-20 sm:top-24 left-1/2 -translate-x-1/2 z-[200] w-full max-w-lg px-4 animate-slide-left">
