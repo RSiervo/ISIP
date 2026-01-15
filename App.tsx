@@ -419,7 +419,7 @@ const LandingPage: React.FC<{
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-current to-transparent opacity-0 group-hover:opacity-40 transition-opacity"></div>
                   
                   <div className={`w-12 h-12 ${getIconColorClasses(pillar.color)} rounded-xl flex items-center justify-center mb-6 border group-hover:scale-110 group-hover:shadow-lg transition-all duration-500`}>
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d={pillar.icon} /></svg>
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                   </div>
                   <h3 className={`text-xl font-black mb-3 ${getHeadingColorClasses(pillar.color)} transition-colors`}>{pillar.title}</h3>
                   <p className={`text-slate-600 dark:text-slate-500 text-xs font-bold leading-relaxed group-hover:text-slate-900 dark:group-hover:text-slate-300 transition-colors`}>
@@ -640,10 +640,10 @@ const App: React.FC = () => {
       onNavigateSettings={() => setView('USER_MANAGEMENT')}
     >
       <div className={view === 'LANDING' ? 'w-full' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12'}>
-        {/* Global Notification Banner at top */}
+        {/* Global Notification Banner - Centered on Mobile and Desktop */}
         {globalNotification && (
-          <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[200] w-[calc(100%-2rem)] max-w-lg px-0 animate-slide-left">
-            <div className={`flex items-start sm:items-center space-x-3 sm:space-x-4 px-4 sm:px-6 py-4 rounded-2xl shadow-2xl border backdrop-blur-xl flex-wrap ${globalNotification.type === 'success' ? 'bg-emerald-500/90 border-emerald-400 text-white' : 'bg-blue-600/90 border-blue-400 text-white'}`}>
+          <div className="fixed top-4 left-4 right-4 sm:left-1/2 sm:right-auto sm:w-full sm:max-w-lg sm:-translate-x-1/2 z-[200] animate-fade-in">
+            <div className={`flex items-center space-x-4 px-4 sm:px-6 py-4 rounded-2xl shadow-2xl border backdrop-blur-xl ${globalNotification.type === 'success' ? 'bg-emerald-500/90 border-emerald-400 text-white' : 'bg-blue-600/90 border-blue-400 text-white'}`}>
               <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
                 {globalNotification.type === 'success' ? (
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
@@ -651,10 +651,12 @@ const App: React.FC = () => {
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 )}
               </div>
-              <p className="text-[10px] sm:text-xs font-black uppercase tracking-widest flex-grow break-words pr-2">
-                {globalNotification.message}
-              </p>
-              <button onClick={() => setGlobalNotification(null)} className="text-white/60 hover:text-white transition-colors flex-shrink-0">
+              <div className="flex-1 min-w-0">
+                <p className="text-[9px] sm:text-xs font-black uppercase tracking-widest leading-tight break-words text-center sm:text-left">
+                  {globalNotification.message}
+                </p>
+              </div>
+              <button onClick={() => setGlobalNotification(null)} className="text-white/60 hover:text-white transition-colors flex-shrink-0 ml-2 p-1">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
