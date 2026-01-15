@@ -1,9 +1,18 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Access the injected API Key. 
+// Vite will replace 'process.env.API_KEY' with the actual string during build.
+const API_KEY = process.env.API_KEY || "";
+
+const ai = new GoogleGenAI({ apiKey: API_KEY });
 
 export async function analyzeSuggestion(message: string): Promise<{ category: string, sentiment: string }> {
+  if (!API_KEY) {
+    console.warn("Gemini API Key is missing. Analysis skipped.");
+    return { category: "General", sentiment: "Neutral" };
+  }
+  
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
@@ -34,6 +43,10 @@ export async function analyzeSuggestion(message: string): Promise<{ category: st
 }
 
 export async function evaluateIdea(title: string, description: string, complexity: string, painPoint: string): Promise<{ impactScore: number, feasibilityScore: number }> {
+  if (!API_KEY) {
+    return { impactScore: 5, feasibilityScore: 5 };
+  }
+
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
@@ -74,6 +87,8 @@ export async function evaluateIdea(title: string, description: string, complexit
 }
 
 export async function getComplexityReasoning(title: string, description: string, complexity: string): Promise<string> {
+  if (!API_KEY) return "Complexity evaluation currently unavailable.";
+
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
