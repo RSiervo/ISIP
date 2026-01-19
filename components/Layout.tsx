@@ -433,7 +433,7 @@ const Layout: React.FC<LayoutProps> = ({ children, role, onRoleToggle, onNavigat
               <h4 className="text-[8px] sm:text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.3em]">Direct Contact</h4>
               <div className="bg-white dark:bg-slate-950 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm dark:shadow-none">
                 <p className="text-[10px] text-slate-500 dark:text-slate-500 font-bold mb-2 sm:mb-4 uppercase tracking-widest">Questions?</p>
-                <a href="mailto:ocd@tim.com" className="inline-flex items-center text-xs sm:text-sm font-black text-blue-600 hover:text-blue-700 dark:text-blue-500 dark:hover:text-blue-400 transition-colors">
+                <a href="ocd.team@timcorp.net.ph" className="inline-flex items-center text-xs sm:text-sm font-black text-blue-600 hover:text-blue-700 dark:text-blue-500 dark:hover:text-blue-400 transition-colors">
                   Reach out to OCD
                   <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                 </a>
