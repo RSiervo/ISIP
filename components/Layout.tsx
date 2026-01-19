@@ -406,7 +406,7 @@ const Layout: React.FC<LayoutProps> = ({ children, role, onRoleToggle, onNavigat
                     </svg>
                   </div>
                 )}
-                <span className="text-lg sm:text-xl font-black tracking-tighter text-slate-900 dark:text-white leading-none uppercase">ISIP Portal</span>
+                <span className="text-lg sm:text-xl font-black tracking-tighter text-slate-900 dark:text-white leading-none uppercase">ISIP INNOVATION</span>
               </div>
               <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed max-w-xs">
                 Empowering every TIM employee to shape the future through clarity, collaboration, and continuous improvement.
