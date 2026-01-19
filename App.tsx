@@ -335,6 +335,45 @@ const LandingPage: React.FC<{
         </div>
       </section>
 
+      {/* Innovation Lifecycle Section */}
+      <section className="py-24 px-4 bg-white dark:bg-slate-950 transition-colors duration-500">
+        <div className="max-w-7xl mx-auto">
+          <ScrollReveal className="text-center mb-16 space-y-4">
+            <h2 className="text-[10px] font-black text-blue-600 dark:text-blue-500 uppercase tracking-[0.5em]">Process Flow</h2>
+            <p className="text-3xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-none">The Innovation Lifecycle</p>
+            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium max-w-2xl mx-auto">From a raw concept to enterprise-wide implementation. We've built a streamlined path for every employee's contribution.</p>
+          </ScrollReveal>
+
+          <div className="relative">
+            {/* Desktop Path SVG */}
+            <div className="absolute top-1/2 left-0 w-full h-1 bg-slate-100 dark:bg-slate-900 -translate-y-1/2 hidden lg:block pointer-events-none">
+              <div className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-500 w-full opacity-20"></div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-12 relative z-10">
+              {[
+                { step: "01", title: "Discovery", desc: "Identify a friction point or efficiency gap in daily operations.", icon: "M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A10.003 10.003 0 0012 3m0 18a10.003 10.003 0 01-8.212-4.33l.054-.09A10.003 10.003 0 0112 21z", color: "blue" },
+                { step: "02", title: "Submission", desc: "Document your solution through the ISIP portal and get a unique ID.", icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01", color: "emerald" },
+                { step: "03", title: "Assessment", desc: "The OCD team and AI agents evaluate feasibility and strategic fit.", icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z", color: "indigo" },
+                { step: "04", title: "Pilot", desc: "Successful ideas are moved into controlled testing and validation.", icon: "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.675.337a4 4 0 01-1.778.417H7.5a2 2 0 01-2-2V10a2 2 0 012-2h1.5a2 2 0 012-2h1.5a2 2 0 002-2V4.5a2 2 0 114 0V6a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 01-2 2h-1.572", color: "amber" },
+                { step: "05", title: "Scaling", desc: "Approved pilots are integrated into TIM's enterprise standard.", icon: "M13 10V3L4 14h7v7l9-11h-7z", color: "rose" }
+              ].map((item, i) => (
+                <ScrollReveal key={i} delay={i * 100} className="relative">
+                  <div className="flex flex-col items-center text-center group">
+                    <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-[2rem] bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 shadow-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:border-blue-500/50 transition-all duration-500 relative z-10`}>
+                      <span className="absolute -top-3 -right-3 px-2 py-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-lg text-[9px] font-black tracking-widest">{item.step}</span>
+                      <svg className={`w-7 h-7 sm:w-9 sm:h-9 ${i === 0 ? 'text-blue-500' : i === 1 ? 'text-emerald-500' : i === 2 ? 'text-indigo-500' : i === 3 ? 'text-amber-500' : 'text-rose-500'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} /></svg>
+                    </div>
+                    <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white uppercase mb-2 tracking-tight">{item.title}</h3>
+                    <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-500 font-bold leading-relaxed">{item.desc}</p>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Innovation Pulse Section */}
       <section className="relative py-24 px-4 bg-gradient-to-b from-slate-50 via-white to-blue-50/30 dark:from-slate-950 dark:via-slate-950 dark:to-slate-950">
         <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/5 rounded-full blur-[100px] -mr-32 -mt-32 dark:hidden"></div>
@@ -394,11 +433,8 @@ const LandingPage: React.FC<{
         </div>
       </section>
 
-      {/* Impact Pillars Section */}
+      {/* Framework Section */}
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white via-slate-50 to-white dark:from-slate-950 dark:via-slate-950 dark:to-slate-950">
-        <div className="absolute top-1/2 left-0 w-96 h-96 bg-indigo-400/5 rounded-full blur-[100px] -ml-48 dark:hidden"></div>
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-blue-400/5 rounded-full blur-[80px] -mr-40 dark:hidden"></div>
-
         <div className="max-w-7xl mx-auto relative z-10">
           <ScrollReveal className="text-center mb-12 space-y-3">
             <h2 className="text-[10px] font-black text-blue-600 dark:text-blue-500 uppercase tracking-[0.5em]">The I.S.I.P. Framework</h2>
@@ -407,19 +443,17 @@ const LandingPage: React.FC<{
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {[
-              { title: "Productivity", desc: "Reduce redundant tasks and manual intervention through smarter workflows.", icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z", color: "blue" },
-              { title: "Quality", desc: "Eliminate errors at the source and improve our final output for stakeholders.", icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z", color: "emerald" },
-              { title: "Experience", desc: "Enhance how employees work and how customers perceive TIM services.", icon: "M21 12a9 9 0 11-18 0 9 9 0 0118 0z M9 10h.01 M15 10h.01 M14.828 14.828a4 4 0 01-5.656 0", color: "indigo" },
+              { title: "Productivity", desc: "Reduce redundant tasks and manual intervention through smarter workflows.", icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6", color: "blue" },
+              { title: "Quality", desc: "Eliminate errors at the source and improve our final output for stakeholders.", icon: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z", color: "emerald" },
+              { title: "Experience", desc: "Enhance how employees work and how customers perceive TIM services.", icon: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z", color: "indigo" },
               { title: "Efficiency", desc: "Optimization of resource allocation and time management across units.", icon: "M13 10V3L4 14h7v7l9-11h-7z", color: "amber" },
-              { title: "Capability", desc: "Ideas that help our teams learn, adapt, and master new skills faster.", icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253", color: "rose" },
-              { title: "Ways of Working", desc: "Cultural and collaborative shifts that make us more agile and connected.", icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z", color: "cyan" }
+              { title: "Capability", desc: "Ideas that help our teams learn, adapt, and master new skills faster.", icon: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z", color: "rose" },
+              { title: "Ways of Working", desc: "Cultural and collaborative shifts that make us more agile and connected.", icon: "M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z", color: "cyan" }
             ].map((pillar, i) => (
               <ScrollReveal key={i} delay={i * 100}>
                 <div className={`group ${getColorClasses(pillar.color)} border p-8 rounded-[2.5rem] transition-all duration-500 shadow-sm hover:shadow-xl card-hover h-full flex flex-col relative overflow-hidden backdrop-blur-md`}>
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-current to-transparent opacity-0 group-hover:opacity-40 transition-opacity"></div>
-                  
                   <div className={`w-12 h-12 ${getIconColorClasses(pillar.color)} rounded-xl flex items-center justify-center mb-6 border group-hover:scale-110 group-hover:shadow-lg transition-all duration-500`}>
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d={pillar.icon} /></svg>
                   </div>
                   <h3 className={`text-xl font-black mb-3 ${getHeadingColorClasses(pillar.color)} transition-colors`}>{pillar.title}</h3>
                   <p className={`text-slate-600 dark:text-slate-500 text-xs font-bold leading-relaxed group-hover:text-slate-900 dark:group-hover:text-slate-300 transition-colors`}>
@@ -432,90 +466,10 @@ const LandingPage: React.FC<{
         </div>
       </section>
 
-      {/* Voice of Innovation Section */}
-      <section className="relative py-24 px-4 bg-gradient-to-b from-white via-indigo-50/20 to-white dark:from-slate-950 dark:via-slate-950 dark:to-slate-950 overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-400/5 rounded-full blur-[150px] pointer-events-none dark:hidden"></div>
-        <div className="max-w-7xl mx-auto relative z-10">
-          <ScrollReveal className="text-center mb-16 space-y-4">
-            <h2 className="text-[10px] font-black text-indigo-600 dark:text-indigo-500 uppercase tracking-[0.5em]">The Human Element</h2>
-            <p className="text-3xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight">Voice of Innovation</p>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { name: "John R.", dept: "Managed Services", quote: "ISIP turned a simple script I wrote into a standard protocol across the entire NOC. The recognition was incredible.", icon: "bg-blue-600" },
-              { name: "Sarah K.", dept: "Marketing", quote: "Finally, a direct channel to leadership. My idea for automated reporting saves my team 10 hours a week.", icon: "bg-emerald-600" },
-              { name: "Miguel D.", dept: "Customer Excellence", quote: "The OCD team didn't just take my idea, they helped me refine it and pilot it within 3 weeks. Truly agile.", icon: "bg-indigo-600" }
-            ].map((testimonial, i) => (
-              <ScrollReveal key={i} delay={i * 150}>
-                <div className="p-10 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-lg relative flex flex-col h-full group hover:-translate-y-2 transition-transform duration-500">
-                  <div className="absolute -top-4 -left-4 text-6xl text-blue-500/10 font-serif">“</div>
-                  <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 font-medium leading-relaxed italic mb-8 relative z-10">
-                    {testimonial.quote}
-                  </p>
-                  <div className="mt-auto flex items-center space-x-4">
-                    <div className={`w-12 h-12 rounded-2xl ${testimonial.icon} flex items-center justify-center text-white font-black shadow-lg`}>
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-widest">{testimonial.dept}</p>
-                      <p className="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter mt-1">Contributor</p>
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Innovation Lifecycle Section */}
-      <section className="bg-slate-900 dark:bg-slate-950 py-24 px-4 sm:px-6 lg:px-8 overflow-hidden relative">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-600/10 rounded-full blur-[120px]"></div>
-        
-        <div className="max-w-7xl mx-auto relative z-10">
-          <ScrollReveal className="text-center mb-20 space-y-4">
-            <h2 className="text-[10px] font-black text-blue-400 uppercase tracking-[0.5em]">System Architecture</h2>
-            <p className="text-3xl lg:text-5xl font-black text-white tracking-tight">The Innovation Lifecycle</p>
-            <p className="text-slate-500 text-xs font-bold uppercase tracking-widest max-w-xl mx-auto">From a single spark to enterprise-wide transformation</p>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 relative">
-            <div className="hidden md:block absolute top-12 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent"></div>
-            
-            {[
-              { step: "01", label: "Ideation", title: "Intake Node", desc: "Friction points are identified and submitted via the ISIP portal.", icon: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" },
-              { step: "02", label: "Validation", title: "OCD Review", desc: "AI-assisted strategic evaluation for impact and feasibility yield.", icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" },
-              { step: "03", label: "Incubation", title: "Pilot Phase", desc: "Controlled testing within specific units to gather real-world data.", icon: "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.675.337a4 4 0 01-1.778.417H7.5a2 2 0 01-2-2V10a2 2 0 012-2h1.5a2 2 0 002-2V4.5a2 2 0 114 0V6a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 01-2 2h-1.572" },
-              { step: "04", label: "Scale", title: "Implementation", desc: "Enterprise-wide deployment and continuous value monitoring.", icon: "M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" }
-            ].map((cycle, idx) => (
-              <ScrollReveal key={idx} delay={idx * 150} className="relative">
-                <div className="space-y-6 group flex flex-col items-center text-center md:items-start md:text-left">
-                  <div className="w-24 h-24 bg-slate-800 rounded-[2rem] border border-white/5 flex items-center justify-center text-blue-500 shadow-2xl relative overflow-hidden transition-all duration-500 group-hover:scale-110 group-hover:bg-slate-700">
-                    <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/10 transition-colors"></div>
-                    <svg className="w-10 h-10 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={cycle.icon} /></svg>
-                    <div className="absolute top-2 right-2 text-[9px] font-black opacity-20">{cycle.step}</div>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest">{cycle.label}</p>
-                    <h3 className="text-xl font-black text-white">{cycle.title}</h3>
-                    <p className="text-xs text-slate-500 font-medium leading-relaxed">{cycle.desc}</p>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA Bottom Banner */}
       <section className="relative py-24 px-4 bg-white dark:bg-slate-950 transition-colors duration-500">
         <ScrollReveal className="max-w-7xl mx-auto">
           <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[3rem] p-10 lg:p-20 text-center space-y-8 relative overflow-hidden shadow-2xl shadow-blue-500/20">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[120px] -mr-48 -mt-48"></div>
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-400/10 rounded-full blur-[120px] -ml-48 -mb-48"></div>
-            
             <h2 className="text-3xl lg:text-5xl font-black text-white tracking-tighter relative z-10">
               Ready to shape the <br className="hidden lg:block"/> future of TIM?
             </h2>
@@ -530,9 +484,6 @@ const LandingPage: React.FC<{
               >
                 Submit Idea
               </button>
-              <p className="text-white/60 text-[10px] font-black uppercase tracking-widest">
-                Restricted to Internal TIM Employees
-              </p>
             </div>
           </div>
         </ScrollReveal>
@@ -640,7 +591,7 @@ const App: React.FC = () => {
       onNavigateSettings={() => setView('USER_MANAGEMENT')}
     >
       <div className={view === 'LANDING' ? 'w-full' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12'}>
-        {/* Global Notification Banner - Perfectly Centered and Fully Visible on Mobile */}
+        {/* Global Notification Banner */}
         {globalNotification && (
           <div className="fixed top-4 inset-x-4 sm:left-1/2 sm:right-auto sm:w-full sm:max-w-lg sm:-translate-x-1/2 z-[200] animate-fade-in">
             <div className={`flex items-center space-x-4 px-5 py-4 rounded-2xl shadow-2xl border backdrop-blur-xl flex-nowrap ${globalNotification.type === 'success' ? 'bg-emerald-500/95 border-emerald-400 text-white' : 'bg-blue-600/95 border-blue-400 text-white'}`}>

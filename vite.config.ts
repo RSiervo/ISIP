@@ -5,9 +5,11 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
   // The third parameter '' allows loading all variables regardless of prefix.
-  const env = loadEnv(mode, process.cwd(), '');
+  // Fix: Access cwd() through type casting to any to resolve 'Property cwd does not exist on type Process' error.
+  const env = loadEnv(mode, (process as any).cwd(), '');
   
-  const apiKey = env.API_KEY || process.env.API_KEY || "";
+  // Use casting for process.env as well to ensure consistent property access if Process type is restricted.
+  const apiKey = env.API_KEY || (process.env as any).API_KEY || "";
 
   return {
     plugins: [react()],
