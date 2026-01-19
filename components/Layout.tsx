@@ -11,12 +11,11 @@ interface LayoutProps {
   onNavigateSettings?: () => void;
 }
 
-type ModalType = 'MISSION' | 'PRIVACY' | 'GUIDELINES' | null;
+type ModalType = 'MISSION' | 'PRIVACY' | 'GUIDELINES' | 'ROADMAP' | 'SUCCESS' | null;
 
 const Layout: React.FC<LayoutProps> = ({ children, role, onRoleToggle, onNavigateHome, onNavigateSettings }) => {
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== 'undefined') {
-      // Look for the 'dark' class explicitly; if absent, it's light mode (default)
       return document.documentElement.classList.contains('dark');
     }
     return false;
@@ -33,7 +32,6 @@ const Layout: React.FC<LayoutProps> = ({ children, role, onRoleToggle, onNavigat
   const notificationRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Sync unread ideas on load and when role is Admin
   const refreshNotifications = () => {
     if (role === UserRole.ADMIN) {
       const allIdeas = storageService.getIdeas();
@@ -48,13 +46,11 @@ const Layout: React.FC<LayoutProps> = ({ children, role, onRoleToggle, onNavigat
     return () => clearInterval(interval);
   }, [role]);
 
-  // Initialize notification sound
   useEffect(() => {
     const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
     audioRef.current = audio;
   }, []);
 
-  // Listen for storage changes to notify admin
   useEffect(() => {
     if (role === UserRole.ADMIN) {
       const handleStorageChange = (e: StorageEvent) => {
@@ -169,6 +165,56 @@ const Layout: React.FC<LayoutProps> = ({ children, role, onRoleToggle, onNavigat
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+          </div>
+        );
+      case 'ROADMAP':
+        return (
+          <div className="space-y-8">
+            <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Innovation Roadmap</h3>
+            <div className="space-y-6 relative before:absolute before:left-[17px] before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-100 dark:before:bg-slate-800">
+              {[
+                { phase: "Phase 1: Foundation", date: "Q1-Q2 2024", status: "Complete", desc: "Launch of the decentralized suggestion node and AI assessment engine." },
+                { phase: "Phase 2: Integration", date: "Q3-Q4 2024", status: "In Progress", desc: "Full automation of idea-to-pilot workflows and reward indexing." },
+                { phase: "Phase 3: Scaling", date: "2025 Vision", status: "Planned", desc: "Cross-departmental collaborative innovation task forces." }
+              ].map((item, idx) => (
+                <div key={idx} className="relative pl-12">
+                  <div className={`absolute left-0 top-1 w-9 h-9 rounded-full border-4 border-white dark:border-slate-900 z-10 flex items-center justify-center text-[10px] font-black ${item.status === 'Complete' ? 'bg-emerald-500 text-white' : item.status === 'In Progress' ? 'bg-blue-600 text-white animate-pulse' : 'bg-slate-200 dark:bg-slate-800 text-slate-400'}`}>
+                    {idx + 1}
+                  </div>
+                  <div>
+                    <div className="flex items-center space-x-3 mb-1">
+                      <p className="font-black text-slate-900 dark:text-white text-sm uppercase">{item.phase}</p>
+                      <span className="text-[8px] font-black uppercase text-slate-400 tracking-widest">{item.date}</span>
+                    </div>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      case 'SUCCESS':
+        return (
+          <div className="space-y-6">
+            <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Success Stories</h3>
+            <div className="space-y-4">
+              {[
+                { title: "Automated NOC Scripting", impact: "85% Time Reduction", dept: "Network Ops" },
+                { title: "Digital Onboarding Node", impact: "Paperless workflow", dept: "HR Strategy" },
+                { title: "Cloud Cost Optimizer", impact: "22% Monthly Saving", dept: "Managed Services" }
+              ].map((story, idx) => (
+                <div key={idx} className="bg-slate-50 dark:bg-slate-950/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:border-blue-500/30 transition-all group">
+                  <div className="flex justify-between items-start mb-2">
+                    <p className="font-bold text-slate-900 dark:text-white text-sm group-hover:text-blue-600 transition-colors">{story.title}</p>
+                    <span className="text-[9px] font-black text-emerald-600 dark:text-emerald-500 uppercase bg-emerald-500/10 px-2 py-0.5 rounded-lg">{story.impact}</span>
+                  </div>
+                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Department: {story.dept}</p>
+                </div>
+              ))}
+              <div className="pt-4 text-center">
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest italic">More results being indexed daily...</p>
               </div>
             </div>
           </div>
@@ -370,8 +416,8 @@ const Layout: React.FC<LayoutProps> = ({ children, role, onRoleToggle, onNavigat
             <div className="col-span-1 space-y-4 sm:space-y-6">
               <h4 className="text-[8px] sm:text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-[0.3em]">Platform</h4>
               <ul className="space-y-2 sm:space-y-4">
-                <li><button onClick={() => alert('Roadmap feature coming soon.')} className="text-xs sm:text-sm text-slate-600 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors font-bold text-left">Innovation Roadmap</button></li>
-                <li><button onClick={() => alert('Success stories currently being archived.')} className="text-xs sm:text-sm text-slate-600 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors font-bold text-left">Success Stories</button></li>
+                <li><button onClick={() => setActiveModal('ROADMAP')} className="text-xs sm:text-sm text-slate-600 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors font-bold text-left">Innovation Roadmap</button></li>
+                <li><button onClick={() => setActiveModal('SUCCESS')} className="text-xs sm:text-sm text-slate-600 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors font-bold text-left">Success Stories</button></li>
               </ul>
             </div>
 
