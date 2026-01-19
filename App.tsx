@@ -466,6 +466,46 @@ const LandingPage: React.FC<{
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section className="py-24 px-4 bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
+        <div className="max-w-4xl mx-auto">
+          <ScrollReveal className="text-center mb-16 space-y-4">
+            <h2 className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-[0.5em]">Information Hub</h2>
+            <p className="text-3xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-none">Common Questions</p>
+          </ScrollReveal>
+          
+          <div className="space-y-4">
+            {[
+              { q: "Who can submit suggestions to ISIP?", a: "All active employees of Total Information Management Corp. (TIM) across all departments and levels are encouraged to submit ideas." },
+              { q: "Are submissions really anonymous?", a: "Yes. If you select the 'Submit Anonymously' option, your name and profile data are stripped from the record before it reaches the review board." },
+              { q: "How long does the review process take?", a: "The OCD team typically performs an initial assessment within 14 business days. You can track your idea's status in real-time using your reference token." },
+              { q: "What happens if my idea is implemented?", a: "Implemented ideas are recognized as strategic successes. Authors (unless anonymous) are acknowledged as innovation leaders and may be eligible for performance indexing rewards." }
+            ].map((faq, i) => (
+              <ScrollReveal key={i} delay={i * 50}>
+                <div className={`border rounded-[2rem] overflow-hidden transition-all duration-500 ${activeFaq === i ? 'bg-white dark:bg-slate-900 border-blue-500/30 shadow-xl' : 'bg-white/50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-800'}`}>
+                  <button 
+                    onClick={() => setActiveFaq(activeFaq === i ? null : i)}
+                    className="w-full px-8 py-6 flex items-center justify-between text-left"
+                  >
+                    <span className={`text-[11px] sm:text-sm font-black uppercase tracking-widest ${activeFaq === i ? 'text-blue-600 dark:text-blue-400' : 'text-slate-700 dark:text-slate-300'}`}>
+                      {faq.q}
+                    </span>
+                    <svg className={`w-5 h-5 text-slate-400 transition-transform duration-500 ${activeFaq === i ? 'rotate-180 text-blue-500' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <div className={`px-8 overflow-hidden transition-all duration-500 ease-in-out ${activeFaq === i ? 'max-h-40 pb-6 opacity-100' : 'max-h-0 opacity-0'}`}>
+                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                      {faq.a}
+                    </p>
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA Bottom Banner */}
       <section className="relative py-24 px-4 bg-white dark:bg-slate-950 transition-colors duration-500">
         <ScrollReveal className="max-w-7xl mx-auto">
