@@ -355,7 +355,7 @@ const LandingPage: React.FC<{
                 { step: "01", title: "Discovery", desc: "Identify a friction point or efficiency gap in daily operations.", icon: "M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A10.003 10.003 0 0012 3m0 18a10.003 10.003 0 01-8.212-4.33l.054-.09A10.003 10.003 0 0112 21z", color: "blue" },
                 { step: "02", title: "Submission", desc: "Document your solution through the ISIP portal and get a unique ID.", icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01", color: "emerald" },
                 { step: "03", title: "Assessment", desc: "The OCD team and AI agents evaluate feasibility and strategic fit.", icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z", color: "indigo" },
-                { step: "04", title: "Pilot", desc: "Successful ideas are moved into controlled testing and validation.", icon: "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.675.337a4 4 0 01-1.778.417H7.5a2 2 0 01-2-2V10a2 2 0 012-2h1.5a2 2 0 012-2h1.5a2 2 0 002-2V4.5a2 2 0 114 0V6a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 01-2 2h-1.572", color: "amber" },
+                { step: "04", title: "Pilot", desc: "Successful ideas are moved into controlled testing and validation.", icon: "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.675.337a4 4 0 01-1.778.417H7.5a2 2 0 01-2-2V10a2 2 0 012-2h1.5a2 2 0 012-2h1.5a2 2 0 002-2V4.5a2 2 0 114 0V6a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 01-2 2h-1.572", color: "amber" },
                 { step: "05", title: "Scaling", desc: "Approved pilots are integrated into TIM's enterprise standard.", icon: "M13 10V3L4 14h7v7l9-11h-7z", color: "rose" }
               ].map((item, i) => (
                 <ScrollReveal key={i} delay={i * 100} className="relative">
@@ -433,6 +433,72 @@ const LandingPage: React.FC<{
         </div>
       </section>
 
+      {/* The OCD Team Section */}
+      <section className="relative py-24 px-4 bg-white dark:bg-slate-950 transition-colors duration-500 border-y border-slate-100 dark:border-slate-900">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <ScrollReveal className="text-center mb-16 space-y-4">
+            <h2 className="text-[10px] font-black text-blue-600 dark:text-blue-500 uppercase tracking-[0.5em]">The People Behind ISIP</h2>
+            <p className="text-3xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-none">The OCD Team</p>
+            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium max-w-2xl mx-auto">Meet the strategic stewards dedicated to transforming your ideas into organizational reality.</p>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16">
+            {[
+              { 
+                name: "Jas Faith Negru", 
+                role: "Organizational Capability & Design", 
+                bio: "Driving strategic innovation and fostering a culture of excellence within TIM. Jas leads the OCD mission to bridge the gap between employee insights and enterprise-wide execution with a focus on high-impact cultural shifts.", 
+                initials: "JN",
+                gradient: "from-blue-500 to-indigo-600",
+                img: "jas.png"
+              },
+              { 
+                name: "Ivy Cua", 
+                role: "Organizational Capability & Design", 
+                bio: "Expert in process optimization and innovation scaling. Ivy ensures every submission is rigorously assessed and mapped to our strategic productivity pillars, transforming raw concepts into validated pilot programs.", 
+                initials: "IC",
+                gradient: "from-emerald-500 to-teal-600",
+                img: "ivy.png"
+              }
+            ].map((member, i) => (
+              <ScrollReveal key={i} delay={i * 200}>
+                <div className="group bg-slate-50 dark:bg-slate-900/50 rounded-[3rem] p-8 sm:p-10 border border-slate-100 dark:border-slate-800 hover:border-blue-500/30 transition-all duration-500 flex flex-col sm:flex-row items-center sm:items-start gap-8 shadow-sm hover:shadow-xl relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-[60px] pointer-events-none"></div>
+                  <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-3xl overflow-hidden bg-slate-200 dark:bg-slate-800 flex-shrink-0 border-4 border-white dark:border-slate-700 shadow-lg group-hover:scale-105 transition-transform duration-500 relative">
+                     <img 
+                        src={member.img} 
+                        alt={member.name} 
+                        className="w-full h-full object-cover relative z-10"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                     />
+                     <div className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br ${member.gradient} text-white shadow-inner`}>
+                        <span className="text-4xl font-black tracking-tighter">{member.initials}</span>
+                     </div>
+                  </div>
+                  <div className="space-y-4 text-center sm:text-left">
+                    <div className="space-y-1">
+                      <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">{member.name}</h3>
+                      <p className="text-[10px] font-black text-blue-600 dark:text-blue-500 uppercase tracking-widest">{member.role}</p>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
+                      {member.bio}
+                    </p>
+                    <div className="flex justify-center sm:justify-start pt-2">
+                      <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[8px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 shadow-sm">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
+                        Innovation Steward
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Framework Section */}
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white via-slate-50 to-white dark:from-slate-950 dark:via-slate-950 dark:to-slate-950">
         <div className="max-w-7xl mx-auto relative z-10">
@@ -453,7 +519,7 @@ const LandingPage: React.FC<{
               <ScrollReveal key={i} delay={i * 100}>
                 <div className={`group ${getColorClasses(pillar.color)} border p-8 rounded-[2.5rem] transition-all duration-500 shadow-sm hover:shadow-xl card-hover h-full flex flex-col relative overflow-hidden backdrop-blur-md`}>
                   <div className={`w-12 h-12 ${getIconColorClasses(pillar.color)} rounded-xl flex items-center justify-center mb-6 border group-hover:scale-110 group-hover:shadow-lg transition-all duration-500`}>
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d={pillar.icon} /></svg>
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
                   </div>
                   <h3 className={`text-xl font-black mb-3 ${getHeadingColorClasses(pillar.color)} transition-colors`}>{pillar.title}</h3>
                   <p className={`text-slate-600 dark:text-slate-500 text-xs font-bold leading-relaxed group-hover:text-slate-900 dark:group-hover:text-slate-300 transition-colors`}>
