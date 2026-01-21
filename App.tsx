@@ -445,7 +445,7 @@ const LandingPage: React.FC<{
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16">
             {[
               { 
-                name: "Jas Faith Negru", 
+                name: "MS. Jas Faith Negru", 
                 role: "Organizational Capability & Design", 
                 bio: "Driving strategic innovation and fostering a culture of excellence within TIM. Jas leads the OCD mission to bridge the gap between employee insights and enterprise-wide execution with a focus on high-impact cultural shifts.", 
                 initials: "JN",
@@ -453,7 +453,7 @@ const LandingPage: React.FC<{
                 img: "jas.png"
               },
               { 
-                name: "Ivy Cua", 
+                name: "MS. Ivy Cua", 
                 role: "Organizational Capability & Design", 
                 bio: "Expert in process optimization and innovation scaling. Ivy ensures every submission is rigorously assessed and mapped to our strategic productivity pillars, transforming raw concepts into validated pilot programs.", 
                 initials: "IC",
