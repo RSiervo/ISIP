@@ -232,7 +232,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
       headStyles: { fillColor: [37, 99, 235], halign: 'center', fontSize: 7, fontStyle: 'bold' },
       styles: { fontSize: 6, halign: 'center', cellPadding: 2, overflow: 'linebreak' },
       columnStyles: { 
-        // Fix: Replace 'width' with 'cellWidth' as per jspdf-autotable documentation
         1: { halign: 'left', cellWidth: 25 },
         6: { cellWidth: 20 },
         7: { halign: 'left', cellWidth: 25 },
@@ -345,7 +344,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
       startY: 35,
       theme: 'grid',
       styles: { fontSize: 9, cellPadding: 4, overflow: 'linebreak' },
-      // Fix: Replace 'width' with 'cellWidth'
       columnStyles: { 0: { fontStyle: 'bold', fillColor: [241, 245, 249], cellWidth: 50 } },
       margin: { top: 35, bottom: 20, left: 20, right: 20 }
     });
@@ -507,7 +505,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
             </button>
 
             {showExportMenu && (
-              <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-2xl z-[80] overflow-hidden animate-fade-in py-1">
+              <div className="absolute left-0 sm:left-auto sm:right-0 mt-2 w-56 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-2xl z-[80] overflow-hidden animate-fade-in py-1">
                 <button onClick={exportExcel} className="w-full px-5 py-4 flex items-center space-x-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left group">
                   <div className="w-8 h-8 bg-emerald-500/10 text-emerald-600 flex items-center justify-center rounded-xl group-hover:scale-110 transition-transform"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg></div>
                   <div><p className="text-[10px] font-black uppercase text-slate-900 dark:text-white tracking-widest">Excel / XLS</p><p className="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase">Spreadsheet</p></div>
@@ -670,7 +668,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                       </button>
                       
                       {showDetailExportMenu && (
-                        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-2xl z-[90] overflow-hidden animate-fade-in py-1">
+                        <div className="absolute right-0 mt-2 w-40 sm:w-48 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-2xl z-[90] overflow-hidden animate-fade-in py-1">
                           <button onClick={exportDetailExcel} className="w-full px-4 py-3 flex items-center space-x-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left group">
                             <span className="text-[9px] font-black uppercase text-slate-900 dark:text-white tracking-widest">Excel</span>
                           </button>
