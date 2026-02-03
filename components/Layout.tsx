@@ -131,11 +131,12 @@ const Layout: React.FC<LayoutProps> = ({
   const NavItem: React.FC<{ label: string; active: boolean; onClick: () => void; icon?: React.ReactNode }> = ({ label, active, onClick, icon }) => (
     <button 
       onClick={onClick}
-      className={`relative px-3 py-2 flex flex-col items-center justify-center transition-all duration-300 group`}
+      className={`relative px-2 sm:px-3 py-2 flex flex-col items-center justify-center transition-all duration-300 group`}
+      title={label}
     >
-      <div className={`flex items-center space-x-2 transition-colors ${active ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200'}`}>
-        {icon && <div className={`${active ? 'scale-110' : 'scale-100 opacity-60'} transition-transform`}>{icon}</div>}
-        <span className={`text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap ${active ? 'opacity-100' : 'opacity-80'}`}>
+      <div className={`flex items-center sm:space-x-2 transition-colors ${active ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200'}`}>
+        {icon && <div className={`${active ? 'scale-110' : 'scale-100 opacity-60'} transition-transform shrink-0`}>{icon}</div>}
+        <span className={`hidden sm:inline text-[8px] sm:text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap ${active ? 'opacity-100' : 'opacity-80'}`}>
           {label}
         </span>
       </div>
@@ -259,7 +260,8 @@ const Layout: React.FC<LayoutProps> = ({
     <div className="min-h-screen flex flex-col transition-colors duration-300 overflow-x-hidden">
       <header className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-100 dark:border-slate-800 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
-          <div className="flex items-center space-x-4 group cursor-pointer overflow-hidden shrink-0" onClick={onNavigateHome}>
+          {/* Left Corner: Logo */}
+          <div className="flex items-center space-x-2 sm:space-x-4 group cursor-pointer overflow-hidden shrink-0" onClick={onNavigateHome}>
             {!logoError ? (
               <img 
                 src="logo.png" 
@@ -268,64 +270,65 @@ const Layout: React.FC<LayoutProps> = ({
                 onError={() => setLogoError(true)}
               />
             ) : (
-              <div className="bg-slate-900 dark:bg-blue-600 p-2.5 rounded-xl shadow-lg group-hover:scale-105 transition-transform duration-500 flex-shrink-0">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="bg-slate-900 dark:bg-blue-600 p-2 sm:p-2.5 rounded-xl shadow-lg group-hover:scale-105 transition-transform duration-500 flex-shrink-0">
+                <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 v2M7 7h10" />
                 </svg>
               </div>
             )}
-            <div className="hidden md:flex flex-col min-w-0">
-              <span className="text-xl sm:text-2xl font-black tracking-tighter text-slate-900 dark:text-white leading-none">ISIP</span>
-              <span className="text-[7px] sm:text-[9px] text-slate-500 dark:text-slate-400 font-black uppercase tracking-[0.15em] sm:tracking-[0.25em] mt-1 whitespace-nowrap">Total Information Management Corp.</span>
+            <div className="hidden sm:flex flex-col min-w-0">
+              <span className="text-lg sm:text-2xl font-black tracking-tighter text-slate-900 dark:text-white leading-none">ISIP</span>
+              <span className="text-[6px] sm:text-[9px] text-slate-500 dark:text-slate-400 font-black uppercase tracking-[0.1em] sm:tracking-[0.25em] mt-0.5 sm:mt-1 whitespace-nowrap">TIM Corp.</span>
             </div>
           </div>
 
-          <div className="flex-grow flex items-center justify-center px-4">
-            <nav className="flex items-center space-x-1 sm:space-x-4 bg-slate-100/50 dark:bg-slate-800/30 px-2 py-1 rounded-2xl border border-slate-200/50 dark:border-slate-700/50">
+          {/* Right Corner: All Actions & Navigation */}
+          <div className="flex items-center space-x-1 sm:space-x-4 shrink-0">
+            {/* Navigation grouped in the corner - Visible on all screens, but icons only on mobile */}
+            <nav className="flex items-center space-x-0.5 sm:space-x-2 bg-slate-100/50 dark:bg-slate-800/30 px-1.5 sm:px-2 py-1 rounded-2xl border border-slate-200/50 dark:border-slate-700/50">
               <NavItem 
                 label="Home" 
                 active={activeView === 'LANDING'} 
                 onClick={onNavigateHome} 
-                icon={<svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>}
+                icon={<svg className="w-4 h-4 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>}
               />
               <NavItem 
                 label="Submit" 
                 active={activeView === 'SUBMISSION'} 
                 onClick={onNavigateSubmission} 
-                icon={<svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" /></svg>}
+                icon={<svg className="w-4 h-4 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" /></svg>}
               />
               <NavItem 
                 label="Track" 
                 active={activeView === 'TRACKING'} 
                 onClick={onNavigateTracking} 
-                icon={<svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>}
+                icon={<svg className="w-4 h-4 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>}
               />
+              {/* Strictly hidden for non-admins and standard users who are not in the admin portal */}
               {role === UserRole.ADMIN && (
                 <NavItem 
                   label="Console" 
                   active={activeView === 'ADMIN'} 
                   onClick={onNavigateAdmin || (() => {})} 
-                  icon={<svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>}
+                  icon={<svg className="w-4 h-4 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>}
                 />
               )}
             </nav>
-          </div>
 
-          <div className="flex items-center space-x-2 sm:space-x-4 shrink-0">
             {role === UserRole.ADMIN && (
               <div className="relative" ref={notificationRef}>
                 <button
                   onClick={() => setShowNotifications(!showNotifications)}
-                  className={`p-2 sm:p-2.5 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-sm flex items-center justify-center border relative ${showNotifications ? 'bg-blue-600 text-white border-blue-500' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-blue-400 hover:bg-slate-200 dark:hover:bg-slate-700 border-slate-200/50 dark:border-slate-700/50'}`}
+                  className={`p-2 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-sm flex items-center justify-center border relative ${showNotifications ? 'bg-blue-600 text-white border-blue-500' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-blue-400 hover:bg-slate-200 dark:hover:bg-slate-700 border-slate-200/50 dark:border-slate-700/50'}`}
                   title="Notifications"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                   </svg>
                   {unreadIdeas.length > 0 && (
-                    <span className="absolute -top-1 -right-1 flex h-4 w-4">
+                    <span className="absolute -top-1 -right-1 flex h-3 w-3 sm:h-4 sm:w-4">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-4 w-4 bg-rose-500 text-[8px] font-black text-white items-center justify-center border-2 border-white dark:border-slate-900">
+                      <span className="relative inline-flex rounded-full h-3 w-3 sm:h-4 sm:w-4 bg-rose-500 text-[6px] sm:text-[8px] font-black text-white items-center justify-center border-2 border-white dark:border-slate-900">
                         {unreadIdeas.length}
                       </span>
                     </span>
@@ -333,7 +336,7 @@ const Layout: React.FC<LayoutProps> = ({
                 </button>
 
                 {showNotifications && (
-                  <div className="fixed sm:absolute top-[70px] sm:top-full left-4 right-4 sm:left-auto sm:right-0 mt-3 sm:mt-3 sm:w-96 bg-white dark:bg-slate-900 backdrop-blur-xl border border-slate-100 dark:border-slate-800 rounded-2xl shadow-2xl z-[100] overflow-hidden animate-fade-in flex flex-col max-h-[calc(100vh-100px)] sm:max-h-[480px]">
+                  <div className="fixed sm:absolute top-[70px] sm:top-full left-4 right-4 sm:left-auto sm:right-0 mt-3 sm:w-96 bg-white dark:bg-slate-900 backdrop-blur-xl border border-slate-100 dark:border-slate-800 rounded-2xl shadow-2xl z-[100] overflow-hidden animate-fade-in flex flex-col max-h-[calc(100vh-100px)] sm:max-h-[480px]">
                     <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-950/50">
                       <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-900 dark:text-white">Alert Console</h4>
                       {unreadIdeas.length > 0 && (
@@ -386,7 +389,7 @@ const Layout: React.FC<LayoutProps> = ({
 
             <button
               onClick={toggleTheme}
-              className="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-blue-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 shadow-sm active:scale-90 flex items-center justify-center border border-slate-200/50 dark:border-slate-700/50"
+              className="p-2 rounded-xl sm:rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-blue-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 shadow-sm active:scale-90 flex items-center justify-center border border-slate-200/50 dark:border-slate-700/50"
               aria-label="Toggle Dark Mode"
             >
               {isDark ? (
@@ -404,7 +407,7 @@ const Layout: React.FC<LayoutProps> = ({
               <div className="relative" ref={userMenuRef}>
                 <button 
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="flex items-center space-x-2 sm:space-x-3 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 p-1.5 sm:p-2 rounded-xl sm:rounded-2xl hover:border-blue-500 transition-all shadow-sm"
+                  className="flex items-center space-x-2 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 p-1 rounded-xl sm:rounded-2xl hover:border-blue-500 transition-all shadow-sm"
                 >
                   <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg sm:rounded-xl flex items-center justify-center text-white font-black text-[10px] shadow-md">
                     AD
