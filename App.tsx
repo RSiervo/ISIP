@@ -224,11 +224,11 @@ const LandingPage: React.FC<{
           
           <ScrollReveal delay={200}>
             <div className="space-y-4 max-w-none mx-auto px-4">
-              <p className="text-slate-600 dark:text-slate-400 text-[14px] font-medium leading-tight">
+              <p className="text-slate-600 dark:text-slate-400 text-[16px] font-medium leading-tight">
                 I.S.I.P. is TIM’s enterprise suggestion and improvement system, managed by the <br /> 
                 <span className="text-blue-600 dark:text-blue-400 font-extrabold border-b-2 border-blue-500/30">Organizational Capability & Design</span> team.
               </p>
-              <p className="text-slate-500 dark:text-slate-500 text-sm sm:text-base lg:text-lg font-bold leading-relaxed italic opacity-90">
+              <p className="text-slate-500 dark:text-slate-500 text-[16px] font-bold leading-relaxed italic opacity-90">
                 A unified platform for continuous process evolution and shared corporate success.
               </p>
             </div>
