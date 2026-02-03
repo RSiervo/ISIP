@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { UserRole, AppView } from './types';
 import Layout from './components/Layout';
@@ -98,6 +97,55 @@ const LandingPage: React.FC<{
 }> = ({ onNavigateSubmission, onNavigateTracking, platformStats, messageIndex }) => {
   
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [pulseEvents, setPulseEvents] = useState<any[]>([]);
+
+  useEffect(() => {
+    const refreshPulse = () => {
+      const allIdeas = storageService.getIdeas();
+      const events: any[] = [];
+      const now = new Date().getTime();
+
+      allIdeas.forEach(i => {
+        events.push({
+          user: i.isAnonymous ? `Anonymous @ ${i.department}` : `${i.name} @ ${i.department}`,
+          action: `Submitted idea: ${i.title}`,
+          rawTime: new Date(i.timestamp).getTime()
+        });
+
+        if (i.lastUpdated && Math.abs(new Date(i.lastUpdated).getTime() - new Date(i.timestamp).getTime()) > 2000) {
+          events.push({
+            user: "OCD Admin",
+            action: `Set status of "${i.title}" to ${i.status}`,
+            rawTime: new Date(i.lastUpdated).toISOString() === i.lastUpdated ? new Date(i.lastUpdated).getTime() : now
+          });
+        }
+      });
+
+      const sorted = events
+        .sort((a, b) => b.rawTime - a.rawTime)
+        .slice(0, 4)
+        .map(e => {
+          const seconds = Math.floor((now - e.rawTime) / 1000);
+          let timeStr = 'just now';
+          if (seconds >= 60) {
+            const mins = Math.floor(seconds / 60);
+            if (mins < 60) timeStr = `${mins}m ago`;
+            else {
+              const hrs = Math.floor(mins / 60);
+              if (hrs < 24) timeStr = `${hrs}h ago`;
+              else timeStr = `${Math.floor(hrs / 24)}d ago`;
+            }
+          }
+          return { ...e, time: timeStr };
+        });
+
+      setPulseEvents(sorted);
+    };
+
+    refreshPulse();
+    const interval = setInterval(refreshPulse, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const getColorClasses = (color: string) => {
     switch(color) {
@@ -137,121 +185,155 @@ const LandingPage: React.FC<{
 
   return (
     <div className="space-y-0 pb-0 overflow-x-hidden">
-      {/* Hero Section - Snapped to header */}
-      <section className="relative pt-12 lg:pt-24 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-b from-blue-50/80 via-white to-slate-50 dark:from-slate-950 dark:via-slate-950 dark:to-slate-950 transition-colors duration-500">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-400/10 rounded-full blur-[120px] -mr-64 -mt-32 dark:hidden"></div>
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-400/5 rounded-full blur-[100px] -ml-32 -mb-32 dark:hidden"></div>
+      {/* Premium Centered Single-Screen Hero Section */}
+      <section className="relative min-h-[calc(100vh-80px)] flex items-center justify-center pt-4 pb-8 sm:pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[#F0F7FF] dark:bg-slate-950 transition-colors duration-500">
+        
+        {/* Background Decorative Elements */}
+        <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-blue-400/20 rounded-full blur-[160px] dark:opacity-30 pointer-events-none"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-400/15 rounded-full blur-[140px] dark:opacity-20 pointer-events-none"></div>
+        
+        {/* Abstract Shapes - Inspired by UI reference */}
+        <div className="absolute top-[20%] left-[10%] w-24 h-6 bg-blue-600/30 rounded-full rotate-[-15deg] blur-[2px] hidden lg:block animate-float-slow"></div>
+        <div className="absolute top-[35%] right-[15%] w-32 h-8 bg-indigo-600/20 rounded-full rotate-[25deg] blur-[1px] hidden lg:block animate-float"></div>
+        <div className="absolute bottom-[25%] left-[15%] w-16 h-16 bg-blue-500/10 rounded-3xl rotate-[12deg] blur-[2px] hidden lg:block animate-pulse-slow"></div>
+        <div className="absolute bottom-[40%] right-[10%] w-40 h-10 bg-emerald-500/10 rounded-full rotate-[-10deg] blur-[3px] hidden lg:block animate-float-slow"></div>
+        
+        {/* Subtle Grid / Lines */}
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03] dark:opacity-[0.05] pointer-events-none"></div>
+        <div className="absolute top-[45%] left-0 w-full h-[1px] bg-blue-500/10 hidden lg:block"></div>
+        <div className="absolute top-0 left-[30%] w-[1px] h-full bg-blue-500/5 hidden lg:block"></div>
 
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16 relative z-10">
-          <div className="lg:w-3/5 space-y-6 lg:space-y-8 text-center lg:text-left">
-            <ScrollReveal>
-              <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-[10px] font-black uppercase tracking-[0.4em] overflow-hidden min-w-[280px] justify-center lg:justify-start">
-                <div key={messageIndex} className="animate-slide-left">
-                  {ROTATING_MESSAGES[messageIndex]}
-                </div>
+        <div className="max-w-6xl mx-auto text-center space-y-4 sm:space-y-6 lg:space-y-8 relative z-10 flex flex-col items-center">
+          
+          <ScrollReveal className="flex justify-center">
+            <div className="inline-flex items-center px-6 py-2.5 rounded-full bg-blue-600 text-white dark:bg-blue-600 dark:text-white text-[10px] font-black uppercase tracking-[0.4em] shadow-xl shadow-blue-500/20 border border-blue-400/30 overflow-hidden min-w-[280px] justify-center backdrop-blur-md">
+              <div key={messageIndex} className="animate-slide-left">
+                {ROTATING_MESSAGES[messageIndex]}
               </div>
-            </ScrollReveal>
-            
-            <ScrollReveal delay={100}>
-              <h1 className="text-4xl lg:text-5xl xl:text-6xl font-black text-slate-900 dark:text-white leading-[0.95] tracking-tighter">
-                Ideas that Scale <br/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-600 dark:from-blue-400 dark:via-indigo-400 dark:to-emerald-400">
-                  Impact & Productivity
+            </div>
+          </ScrollReveal>
+          
+          <ScrollReveal delay={100} className="w-full">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-slate-900 dark:text-white leading-[1.1] tracking-tighter drop-shadow-sm">
+              Ideas that Scale <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-600 dark:from-blue-400 dark:via-indigo-400 dark:to-emerald-400 inline-block whitespace-nowrap pb-2">
+                Impact & Productivity
+              </span>
+            </h1>
+          </ScrollReveal>
+          
+          <ScrollReveal delay={200}>
+            <div className="space-y-4 max-w-none mx-auto px-4">
+              <p className="text-slate-600 dark:text-slate-400 text-[14px] font-medium leading-tight">
+                I.S.I.P. is TIM’s enterprise suggestion and improvement system, managed by the <br /> 
+                <span className="text-blue-600 dark:text-blue-400 font-extrabold border-b-2 border-blue-500/30">Organizational Capability & Design</span> team.
+              </p>
+              <p className="text-slate-500 dark:text-slate-500 text-sm sm:text-base lg:text-lg font-bold leading-relaxed italic opacity-90">
+                A unified platform for continuous process evolution and shared corporate success.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal delay={300} className="w-full">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 pt-4 px-4">
+              <button 
+                onClick={onNavigateSubmission}
+                className="w-full sm:w-auto group relative px-12 py-5 bg-blue-600 hover:bg-blue-700 text-white rounded-[1.5rem] font-black text-xs sm:text-sm uppercase tracking-[0.2em] shadow-[0_20px_50px_rgba(37,99,235,0.4)] active:scale-95 transition-all overflow-hidden border border-blue-400/20"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:animate-shimmer"></div>
+                <span className="relative flex items-center justify-center">
+                  SUBMIT SUGGESTION
+                  <div className="ml-3 w-7 h-7 bg-white/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                  </div>
                 </span>
-              </h1>
-            </ScrollReveal>
-            
-            <ScrollReveal delay={200}>
-              <div className="space-y-4 max-w-2xl mx-auto lg:mx-0">
-                <p className="text-slate-600 dark:text-slate-400 text-base lg:text-lg font-medium leading-relaxed">
-                  I.S.I.P. is TIM’s enterprise suggestion and improvement system, managed by the <span className="text-blue-600 dark:text-blue-400 font-bold">Organizational Capability & Design (OCD)</span> team.
-                </p>
-                <p className="text-slate-600 dark:text-slate-400 text-base lg:text-lg font-medium leading-relaxed">
-                  A space to share ideas that improve productivity, efficiency, quality, customer experience, or ways of working.
-                </p>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal delay={300}>
-              <div className="flex flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2">
-                <button 
-                  onClick={onNavigateSubmission}
-                  className="flex-1 sm:flex-none group relative px-4 sm:px-10 py-4 sm:py-5 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] shadow-[0_15px_40px_rgba(37,99,235,0.25)] active:scale-95 transition-all overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:animate-shimmer"></div>
-                  <span className="relative flex items-center justify-center">
-                    Submit Idea
-                    <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-2 sm:ml-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                  </span>
-                </button>
-                
-                <button 
-                  onClick={onNavigateTracking}
-                  className="flex-1 sm:flex-none px-4 sm:px-8 py-4 sm:py-5 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] border border-slate-200 dark:border-slate-800 active:scale-95 transition-all shadow-sm whitespace-nowrap"
-                >
-                  Track Ideas
-                </button>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal delay={400}>
-              <div className="flex items-center justify-center lg:justify-start space-x-10 pt-6 border-t border-slate-200 dark:border-slate-900">
-                <div className="text-center lg:text-left">
-                  <p className="text-2xl font-black text-slate-900 dark:text-white">{platformStats.total}</p>
-                  <p className="text-[9px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-widest">Total Submissions</p>
-                </div>
-                <div className="w-px h-8 bg-slate-200 dark:bg-slate-800"></div>
-                <div className="text-center lg:text-left">
-                  <p className="text-2xl font-black text-emerald-600 dark:text-emerald-500">{platformStats.implemented}</p>
-                  <p className="text-[9px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-widest">Live Solutions</p>
-                </div>
-              </div>
-            </ScrollReveal>
-          </div>
-
-          <div className="lg:w-2/5 relative">
-            <div className="absolute inset-0 bg-blue-600/20 blur-[120px] rounded-full animate-pulse-slow"></div>
-            <div className="relative bg-white/80 dark:bg-slate-900/90 backdrop-blur-xl border border-white dark:border-slate-800 p-8 lg:p-10 rounded-[3rem] shadow-2xl rotate-3 hover:rotate-0 transition-all duration-1000 group animate-float border-slate-100">
-              <div className="absolute -top-4 -right-4 w-16 h-16 bg-emerald-500 rounded-2xl flex items-center justify-center text-white shadow-xl rotate-12 group-hover:rotate-0 transition-all duration-500">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-              </div>
+              </button>
               
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-end">
-                    <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Efficiency Yield</span>
-                    <span className="text-xl font-black text-blue-600 dark:text-blue-400">
-                      <AnimatedCounter target={100} duration={8000} loop={true} />%
-                    </span>
-                  </div>
-                  <div className="h-1.5 bg-slate-100 dark:bg-slate-950 rounded-full overflow-hidden">
-                    <div className="h-full bg-blue-500 animate-grow-width origin-left relative">
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
-                    </div>
-                  </div>
-                </div>
+              <button 
+                onClick={onNavigateTracking}
+                className="w-full sm:w-auto px-12 py-5 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-white rounded-[1.5rem] font-black text-xs sm:text-sm uppercase tracking-[0.2em] border-2 border-slate-200 dark:border-slate-800 active:scale-95 transition-all shadow-xl whitespace-nowrap flex items-center justify-center group"
+              >
+                TRACK MOVEMENT
+                <svg className="w-5 h-5 ml-3 text-blue-600 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" /></svg>
+              </button>
+            </div>
+          </ScrollReveal>
 
-                <div className="p-5 bg-slate-50/50 dark:bg-slate-950/50 rounded-2xl border border-slate-100 dark:border-slate-800">
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed italic">
-                    "Ideas don’t need to be perfect, clarity matters more than polish."
-                  </p>
-                  <div className="mt-3 flex items-center space-x-3">
-                    <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white">
-                      <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" /></svg>
-                    </div>
-                    <div>
-                      <p className="text-[9px] font-black text-slate-900 dark:text-white uppercase tracking-wider">OCD Team</p>
-                      <p className="text-[7px] text-slate-400 dark:text-slate-600 uppercase">Innovation Stewards</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex justify-around pt-2">
-                  {[1,2,3,4].map(i => (
-                    <div key={i} className="w-1.5 h-1.5 rounded-full bg-slate-200 dark:bg-slate-800"></div>
-                  ))}
-                </div>
+          <ScrollReveal delay={400} className="w-full max-w-3xl pt-8 sm:pt-12">
+            <div className="flex items-center justify-center space-x-12 sm:space-x-24 py-6 border-t border-slate-300/30 dark:border-slate-800/50">
+              <div className="text-center group">
+                <p className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white group-hover:scale-110 transition-transform duration-500 tabular-nums">{platformStats.total}</p>
+                <p className="text-[9px] sm:text-[10px] font-black text-slate-500 dark:text-slate-600 uppercase tracking-[0.4em] mt-2">Total Submissions</p>
               </div>
+              <div className="w-px h-16 bg-slate-300/30 dark:bg-slate-800"></div>
+              <div className="text-center group">
+                <p className="text-4xl sm:text-5xl lg:text-6xl font-black text-emerald-600 dark:text-emerald-500 group-hover:scale-110 transition-transform duration-500 tabular-nums">{platformStats.implemented}</p>
+                <p className="text-[9px] sm:text-[10px] font-black text-slate-500 dark:text-slate-600 uppercase tracking-[0.4em] mt-2">Live Solutions</p>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+        
+        {/* Subtle Bottom Glow for Transition */}
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white dark:from-slate-950 to-transparent pointer-events-none"></div>
+      </section>
+
+      {/* Aesthetic Efficiency Yield Section */}
+      <section className="relative py-24 px-4 bg-white dark:bg-slate-950 overflow-hidden border-y border-slate-100 dark:border-slate-900">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-[150px] pointer-events-none"></div>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            <div className="lg:col-span-5 space-y-8">
+              <ScrollReveal className="space-y-4">
+                <h2 className="text-[10px] font-black text-blue-600 dark:text-blue-500 uppercase tracking-[0.6em]">System Performance</h2>
+                <p className="text-3xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tighter leading-none">Enterprise Impact Yield</p>
+                <p className="text-slate-600 dark:text-slate-400 text-base font-medium leading-relaxed">
+                  Our innovation engine translates raw employee feedback into measurable organizational value. This metric represents the cumulative efficiency gain projected across all active pilots and implemented solutions.
+                </p>
+              </ScrollReveal>
+              
+              <ScrollReveal delay={100} className="flex gap-4">
+                <div className="px-6 py-4 bg-blue-600/5 rounded-2xl border border-blue-600/10">
+                  <p className="text-2xl font-black text-blue-600">92%</p>
+                  <p className="text-[8px] font-black uppercase tracking-widest text-slate-400">Resource Alignment</p>
+                </div>
+                <div className="px-6 py-4 bg-emerald-600/5 rounded-2xl border border-emerald-600/10">
+                  <p className="text-2xl font-black text-emerald-600">8.4x</p>
+                  <p className="text-[8px] font-black uppercase tracking-widest text-slate-400">Innovation Velocity</p>
+                </div>
+              </ScrollReveal>
+            </div>
+
+            <div className="lg:col-span-7">
+              <ScrollReveal delay={200} className="relative group">
+                <div className="absolute inset-0 bg-blue-600/20 blur-[120px] rounded-full group-hover:scale-110 transition-transform duration-1000"></div>
+                <div className="relative bg-white/80 dark:bg-slate-900/90 backdrop-blur-3xl border border-white dark:border-slate-800 p-10 sm:p-16 rounded-[4rem] shadow-2xl overflow-hidden border-slate-100">
+                  <div className="absolute top-0 right-0 p-8">
+                    <svg className="w-12 h-12 text-blue-600/10" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                  </div>
+                  
+                  <div className="space-y-12">
+                    <div className="space-y-4 text-center">
+                      <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.5em]">Current Cumulative Yield</p>
+                      <div className="text-7xl lg:text-9xl font-black text-blue-600 dark:text-blue-400 tabular-nums">
+                        <AnimatedCounter target={100} duration={8000} loop={true} />%
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="h-4 bg-slate-100 dark:bg-slate-950 rounded-full overflow-hidden p-1 shadow-inner">
+                        <div className="h-full bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 animate-grow-width origin-left relative rounded-full">
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">
+                        <span>Baseline Efficiency</span>
+                        <span className="text-blue-600">Optimal Performance Reached</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ScrollReveal>
             </div>
           </div>
         </div>
@@ -352,11 +434,11 @@ const LandingPage: React.FC<{
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-12 relative z-10">
               {[
-                { step: "01", title: "Discovery", desc: "Identify a friction point or efficiency gap in daily operations.", icon: "M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A10.003 10.003 0 0012 3m0 18a10.003 10.003 0 01-8.212-4.33l.054-.09A10.003 10.003 0 0112 21z", color: "blue" },
-                { step: "02", title: "Submission", desc: "Document your solution through the ISIP portal and get a unique ID.", icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01", color: "emerald" },
-                { step: "03", title: "Assessment", desc: "The OCD team and AI agents evaluate feasibility and strategic fit.", icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z", color: "indigo" },
-                { step: "04", title: "Pilot", desc: "Successful ideas are moved into controlled testing and validation.", icon: "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.675.337a4 4 0 01-1.778.417H7.5a2 2 0 01-2-2V10a2 2 0 012-2h1.5a2 2 0 012-2h1.5a2 2 0 002-2V4.5a2 2 0 114 0V6a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 012 2v1a2 2 0 01-2 2h-1.572", color: "amber" },
-                { step: "05", title: "Scaling", desc: "Approved pilots are integrated into TIM's enterprise standard.", icon: "M13 10V3L4 14h7v7l9-11h-7z", color: "rose" }
+                { step: "01", title: "Discovery", desc: "Identify a friction point or efficiency gap in daily operations.", icon: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z", color: "blue" },
+                { step: "02", title: "Submission", desc: "Document your solution through the ISIP portal and get a unique ID.", icon: "M12 19l9 2-9-18-9 18 9-2zm0 0v-8", color: "emerald" },
+                { step: "03", title: "Assessment", desc: "The OCD team and AI agents evaluate feasibility and strategic fit.", icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2", color: "indigo" },
+                { step: "04", title: "Pilot", desc: "Successful ideas are moved into controlled testing and validation.", icon: "M9.75 3.104v1.244c0 .552-.448 1-1 1s-1-.448-1-1V3.104C5.352 3.554 3.75 5.59 3.75 8c0 3.107 2.518 5.625 5.625 5.625S15 11.107 15 8c0-2.41-1.602-4.446-4-4.896V4.348c0 .552-.448 1-1 1s-1-.448-1-1V3.104zM10.5 1.5h-2a.75.75 0 000 1.5h2a.75.75 0 000-1.5z", color: "amber" },
+                { step: "05", title: "Scaling", desc: "Approved pilots are integrated into TIM's enterprise standard.", icon: "M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9", color: "rose" }
               ].map((item, i) => (
                 <ScrollReveal key={i} delay={i * 100} className="relative">
                   <div className="flex flex-col items-center text-center group">
@@ -365,7 +447,7 @@ const LandingPage: React.FC<{
                       <svg className={`w-7 h-7 sm:w-9 sm:h-9 ${i === 0 ? 'text-blue-500' : i === 1 ? 'text-emerald-500' : i === 2 ? 'text-indigo-500' : i === 3 ? 'text-amber-500' : 'text-rose-500'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} /></svg>
                     </div>
                     <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white uppercase mb-2 tracking-tight">{item.title}</h3>
-                    <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-500 font-bold leading-relaxed">{item.desc}</p>
+                    <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-500 font-bold uppercase leading-relaxed">{item.desc}</p>
                   </div>
                 </ScrollReveal>
               ))}
@@ -412,20 +494,21 @@ const LandingPage: React.FC<{
                      <span className="text-[9px] font-black text-blue-600 uppercase tracking-tighter">Live Updates</span>
                   </div>
                   <div className="space-y-4">
-                     {[
-                       { user: "Tech Solutions", action: "submitted a Productivity idea", time: "2m ago" },
-                       { user: "Marketing", action: "idea reached Pilot stage", time: "15m ago" },
-                       { user: "Operations", action: "implemented Quality fix", time: "1h ago" },
-                       { user: "GRC", action: "submitted 3 new capabilities", time: "3h ago" }
-                     ].map((log, i) => (
-                       <div key={i} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 animate-fade-up" style={{animationDelay: `${i*150}ms`}}>
-                         <div className="flex flex-col">
-                           <span className="text-[11px] font-black text-slate-900 dark:text-white uppercase">{log.user}</span>
-                           <span className="text-[9px] text-slate-500 dark:text-slate-500 font-bold uppercase">{log.action}</span>
-                         </div>
-                         <span className="text-[8px] font-black text-slate-400 uppercase">{log.time}</span>
+                     {pulseEvents.length === 0 ? (
+                       <div className="py-20 text-center opacity-40">
+                         <p className="text-[10px] font-black uppercase tracking-widest">No activity recorded yet</p>
                        </div>
-                     ))}
+                     ) : (
+                       pulseEvents.map((log, i) => (
+                         <div key={i} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 animate-fade-up" style={{animationDelay: `${i*150}ms`}}>
+                           <div className="flex flex-col min-w-0 pr-4">
+                             <span className="text-[10px] font-black text-slate-900 dark:text-white uppercase truncate">{log.user}</span>
+                             <span className="text-[9px] text-slate-500 dark:text-slate-500 font-bold uppercase truncate">{log.action}</span>
+                           </div>
+                           <span className="text-[8px] font-black text-slate-400 uppercase shrink-0">{log.time}</span>
+                         </div>
+                       ))
+                     )}
                   </div>
                </div>
             </ScrollReveal>
@@ -445,37 +528,41 @@ const LandingPage: React.FC<{
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16">
             {[
               { 
-                name: "MS. Jas Faith Negru", 
+                name: "Jas Faith Negru", 
                 role: "Organizational Capability & Design", 
                 bio: "Driving strategic innovation and fostering a culture of excellence within TIM. Jas leads the OCD mission to bridge the gap between employee insights and enterprise-wide execution with a focus on high-impact cultural shifts.", 
                 initials: "JN",
-                gradient: "from-blue-500 to-indigo-600",
-                img: "jas.png"
+                image: "/jas.jpg",
+                gradient: "from-blue-500 to-indigo-600"
               },
               { 
-                name: "MS. Ivy Cua", 
+                name: "Ivy Cua", 
                 role: "Organizational Capability & Design", 
                 bio: "Expert in process optimization and innovation scaling. Ivy ensures every submission is rigorously assessed and mapped to our strategic productivity pillars, transforming raw concepts into validated pilot programs.", 
                 initials: "IC",
-                gradient: "from-emerald-500 to-teal-600",
-                img: "ivy.png"
+                image: "/ivy.jpg",
+                gradient: "from-emerald-500 to-teal-600"
               }
             ].map((member, i) => (
               <ScrollReveal key={i} delay={i * 200}>
                 <div className="group bg-slate-50 dark:bg-slate-900/50 rounded-[3rem] p-8 sm:p-10 border border-slate-100 dark:border-slate-800 hover:border-blue-500/30 transition-all duration-500 flex flex-col sm:flex-row items-center sm:items-start gap-8 shadow-sm hover:shadow-xl relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-[60px] pointer-events-none"></div>
-                  <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-3xl overflow-hidden bg-slate-200 dark:bg-slate-800 flex-shrink-0 border-4 border-white dark:border-slate-700 shadow-lg group-hover:scale-105 transition-transform duration-500 relative">
-                     <img 
-                        src={member.img} 
-                        alt={member.name} 
-                        className="w-full h-full object-cover relative z-10"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = 'none';
-                        }}
-                     />
-                     <div className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br ${member.gradient} text-white shadow-inner`}>
-                        <span className="text-4xl font-black tracking-tighter">{member.initials}</span>
-                     </div>
+                  <div className={`w-32 h-32 sm:w-40 sm:h-40 rounded-3xl bg-gradient-to-br ${member.gradient} flex-shrink-0 flex items-center justify-center text-white text-4xl font-black shadow-lg shadow-blue-500/10 group-hover:scale-105 transition-transform duration-500 overflow-hidden`}>
+                    <img 
+                      src={member.image} 
+                      alt={member.name} 
+                      className="w-full h-full object-cover" 
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        const parent = e.currentTarget.parentElement;
+                        if (parent) {
+                          const initialsSpan = document.createElement('span');
+                          initialsSpan.className = "text-white text-4xl font-black";
+                          initialsSpan.innerText = member.initials;
+                          parent.appendChild(initialsSpan);
+                        }
+                      }}
+                    />
                   </div>
                   <div className="space-y-4 text-center sm:text-left">
                     <div className="space-y-1">
@@ -509,15 +596,15 @@ const LandingPage: React.FC<{
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {[
-              { title: "Productivity", desc: "Reduce redundant tasks and manual intervention through smarter workflows.", icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z", color: "blue" },
-              { title: "Quality", desc: "Eliminate errors at the source and improve our final output for stakeholders.", icon: "M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z", color: "emerald" },
-              { title: "Experience", desc: "Enhance how employees work and how customers perceive TIM services.", icon: "M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z", color: "indigo" },
+              { title: "Productivity", desc: "Reduce redundant tasks and manual intervention through smarter workflows.", icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6", color: "blue" },
+              { title: "Quality", desc: "Eliminate errors at the source and improve our final output for stakeholders.", icon: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z", color: "emerald" },
+              { title: "Experience", desc: "Enhance how employees work and how customers perceive TIM services.", icon: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z", color: "indigo" },
               { title: "Efficiency", desc: "Optimization of resource allocation and time management across units.", icon: "M13 10V3L4 14h7v7l9-11h-7z", color: "amber" },
-              { title: "Capability", desc: "Ideas that help our teams learn, adapt, and master new skills faster.", icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253", color: "rose" },
+              { title: "Capability", desc: "Ideas that help our teams learn, adapt, and master new skills faster.", icon: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z", color: "rose" },
               { title: "Ways of Working", desc: "Cultural and collaborative shifts that make us more agile and connected.", icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z", color: "cyan" }
             ].map((pillar, i) => (
               <ScrollReveal key={i} delay={i * 100}>
-                <div className={`group ${getColorClasses(pillar.color)} border p-8 rounded-[2.5rem] transition-all duration-500 shadow-sm hover:shadow-xl card-hover h-full flex flex-col relative overflow-hidden backdrop-blur-md`}>
+                <div className={`group ${getColorClasses(pillar.color)} border p-8 rounded-[2.5rem] transition-all duration-500 shadow-sm hover:shadow-xl card-hover h-full flex flex-col items-center text-center relative overflow-hidden backdrop-blur-md`}>
                   <div className={`w-12 h-12 ${getIconColorClasses(pillar.color)} rounded-xl flex items-center justify-center mb-6 border group-hover:scale-110 group-hover:shadow-lg transition-all duration-500`}>
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d={pillar.icon} /></svg>
                   </div>
@@ -640,7 +727,6 @@ const App: React.FC = () => {
     return () => clearInterval(interval);
   }, [isLoginSuccess]);
 
-  // Auto-hide toast
   useEffect(() => {
     if (globalNotification) {
       const timer = setTimeout(() => setGlobalNotification(null), 5000);
@@ -697,7 +783,6 @@ const App: React.FC = () => {
       onNavigateSettings={() => setView('USER_MANAGEMENT')}
     >
       <div className={view === 'LANDING' ? 'w-full' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12'}>
-        {/* Global Notification Banner */}
         {globalNotification && (
           <div className="fixed top-4 inset-x-4 sm:left-1/2 sm:right-auto sm:w-full sm:max-w-lg sm:-translate-x-1/2 z-[200] animate-fade-in">
             <div className={`flex items-center space-x-4 px-5 py-4 rounded-2xl shadow-2xl border backdrop-blur-xl flex-nowrap ${globalNotification.type === 'success' ? 'bg-emerald-500/95 border-emerald-400 text-white' : 'bg-blue-600/95 border-blue-400 text-white'}`}>
@@ -734,7 +819,6 @@ const App: React.FC = () => {
         {view === 'USER_MANAGEMENT' && <UserManagement onBack={() => setView('ADMIN')} />}
       </div>
 
-      {/* Success full-screen loading overlay */}
       {isLoginSuccess && (
         <div className="fixed inset-0 z-[300] flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-xl animate-fade-in">
           <div className="text-center space-y-8 sm:space-y-10 w-full max-w-xs">
@@ -760,7 +844,6 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* Admin Login Modal */}
       {showLoginModal && !isLoginSuccess && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/40 backdrop-blur-md animate-fade-in">
           <div className="bg-white/70 dark:bg-slate-900/70 backdrop-blur-2xl rounded-[3rem] p-1 w-full max-w-md border border-white/40 dark:border-slate-800/50 relative shadow-[0_25px_80px_rgba(0,0,0,0.4)] overflow-hidden">
