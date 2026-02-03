@@ -1,11 +1,9 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 
 // Initialize the Google GenAI client using the required pattern.
-// Always use a named parameter and obtain the API key exclusively from process.env.API_KEY.
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
-// Standardized on 'gemini-3-flash-preview' for high-speed, free-tier friendly performance.
+// Standardized on 'gemini-3-flash-preview' for high-speed performance.
 const TEXT_MODEL = "gemini-3-flash-preview";
 
 export async function analyzeSuggestion(message: string): Promise<{ category: string, sentiment: string }> {
@@ -40,7 +38,6 @@ export async function analyzeSuggestion(message: string): Promise<{ category: st
 
 export async function evaluateIdea(title: string, description: string, complexity: string, painPoint: string): Promise<{ impactScore: number, feasibilityScore: number }> {
   try {
-    // Using gemini-3-flash-preview for high-efficiency evaluation.
     const response = await ai.models.generateContent({
       model: TEXT_MODEL,
       contents: `You are an expert innovation consultant for TIM (Total Information Management). 
@@ -68,7 +65,6 @@ export async function evaluateIdea(title: string, description: string, complexit
     });
 
     const result = JSON.parse(response.text || '{"impactScore": 5, "feasibilityScore": 5}');
-    // Clamp values to 1-10 just in case
     return {
       impactScore: Math.min(10, Math.max(1, Math.round(result.impactScore))),
       feasibilityScore: Math.min(10, Math.max(1, Math.round(result.feasibilityScore)))
@@ -81,7 +77,6 @@ export async function evaluateIdea(title: string, description: string, complexit
 
 export async function getComplexityReasoning(title: string, description: string, complexity: string): Promise<string> {
   try {
-    // Using gemini-3-flash-preview for rapid architectural reasoning.
     const response = await ai.models.generateContent({
       model: TEXT_MODEL,
       contents: `As an innovation architect, analyze this idea and explain why it is classified as "${complexity}" complexity. 
@@ -91,9 +86,57 @@ export async function getComplexityReasoning(title: string, description: string,
       Title: "${title}"
       Description: "${description}"`,
     });
-    return response.text?.trim() || "Complexity is based on estimated implementation time and required cross-unit coordination.";
+    return (response.text?.trim() || "Complexity is based on estimated implementation time and required cross-unit coordination.").replace(/[\*#_~`]/g, '');
   } catch (error) {
     console.error("Gemini complexity reasoning failed:", error);
     return "Standard evaluation based on historical data for similar process improvements.";
+  }
+}
+
+/**
+ * OCD AI Agent logic
+ */
+export async function getOCDAIResponse(userMessage: string, history: {role: 'user' | 'model', parts: [{text: string}]}[]): Promise<string> {
+  try {
+    const systemInstruction = `You are "OCD AI", a professional and helpful virtual assistant for the I.S.I.P. (Innovation Suggestion & Improvement Portal) at Total Information Management Corp (TIM).
+    
+    Your goal is to answer all questions about how the system works.
+    System Knowledge:
+    - ISIP is managed by the Organizational Capability & Design (OCD) team.
+    - Key team members: Jas Faith Negru (Cultural shifts & high impact) and Ivy Cua (Process optimization & scaling).
+    - Submission process: Identity -> Proposition -> Strategic Impact -> Feasibility -> Confirmation.
+    - Anonymity: Users can choose to hide their identity.
+    - Tracking: Every submission gets a token like ISIP-XXXXXX.
+    - Lifecycle: Review (initial OCD check) -> Pilot (testing) -> Implemented (full rollout).
+    - Framework pillars: Productivity, Quality, Experience, Efficiency, Capability, Ways of Working.
+    - Review timeline: Typically 14 business days.
+    
+    CONSTRAINTS:
+    - Strictly DO NOT use markdown symbols like asterisks (*) or hashtags (#). Use plain text only.
+    - Keep responses concise, clean, and conversational.
+    - Always remain professional and supportive of innovation.
+    - If you don't know an answer, suggest they contact ocd@tim.com.`;
+
+    const chat = ai.chats.create({
+      model: TEXT_MODEL,
+      config: {
+        systemInstruction,
+        temperature: 0.7,
+      },
+      history: history.length > 0 ? history : undefined
+    });
+
+    const result = await chat.sendMessage({ message: userMessage });
+    
+    // Clean all markdown symbols from the response text
+    const cleanText = (result.text || "I'm sorry, I encountered an issue processing your request. Please try again or contact the OCD team.")
+      .replace(/[\*#_~`]/g, '')
+      .replace(/\n\s*\n/g, '\n') // Remove excessive empty lines
+      .trim();
+      
+    return cleanText;
+  } catch (error) {
+    console.error("OCD AI failed:", error);
+    return "The OCD AI node is currently undergoing maintenance. Please reach out to ocd@tim.com for urgent inquiries.";
   }
 }

@@ -244,7 +244,7 @@ const LandingPage: React.FC<{
                 <span className="relative flex items-center justify-center">
                   SUBMIT<span className="hidden sm:inline">&nbsp;SUGGESTION</span>
                   <div className="ml-2 sm:ml-3 w-6 h-6 sm:w-7 sm:h-7 bg-white/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                    <svg className="w-3 h-3 sm:w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                   </div>
                 </span>
               </button>
@@ -778,8 +778,12 @@ const App: React.FC = () => {
   return (
     <Layout 
       role={currentRole} 
+      activeView={view}
       onRoleToggle={handleExitConsole} 
       onNavigateHome={() => setView('LANDING')}
+      onNavigateSubmission={() => setView('SUBMISSION')}
+      onNavigateTracking={() => setView('TRACKING')}
+      onNavigateAdmin={() => setView('ADMIN')}
       onNavigateSettings={() => setView('USER_MANAGEMENT')}
     >
       <div className={view === 'LANDING' ? 'w-full' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12'}>
