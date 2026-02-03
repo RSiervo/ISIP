@@ -206,7 +206,7 @@ const LandingPage: React.FC<{
         <div className="max-w-6xl mx-auto text-center space-y-4 sm:space-y-6 lg:space-y-8 relative z-10 flex flex-col items-center">
           
           <ScrollReveal className="flex justify-center">
-            <div className="inline-flex items-center px-6 py-2.5 rounded-full bg-blue-600 text-white dark:bg-blue-600 dark:text-white text-[10px] font-black uppercase tracking-[0.4em] shadow-xl shadow-blue-500/20 border border-blue-400/30 overflow-hidden min-w-[280px] justify-center backdrop-blur-md">
+            <div className="inline-flex items-center px-6 py-2.5 rounded-full bg-white/70 backdrop-blur-md text-blue-600 dark:bg-white/10 dark:text-blue-400 text-[10px] font-black uppercase tracking-[0.4em] shadow-xl shadow-blue-500/5 border border-white dark:border-slate-800/50 overflow-hidden min-w-[280px] justify-center">
               <div key={messageIndex} className="animate-slide-left">
                 {ROTATING_MESSAGES[messageIndex]}
               </div>
@@ -235,26 +235,26 @@ const LandingPage: React.FC<{
           </ScrollReveal>
 
           <ScrollReveal delay={300} className="w-full">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 pt-4 px-4">
+            <div className="flex flex-row items-center justify-center gap-2 sm:gap-6 pt-4 px-2 sm:px-4">
               <button 
                 onClick={onNavigateSubmission}
-                className="w-full sm:w-auto group relative px-12 py-5 bg-blue-600 hover:bg-blue-700 text-white rounded-[1.5rem] font-black text-xs sm:text-sm uppercase tracking-[0.2em] shadow-[0_20px_50px_rgba(37,99,235,0.4)] active:scale-95 transition-all overflow-hidden border border-blue-400/20"
+                className="flex-1 sm:flex-none sm:w-auto group relative px-4 sm:px-12 py-5 bg-blue-600 hover:bg-blue-700 text-white rounded-[1.5rem] font-black text-[10px] sm:text-sm uppercase tracking-[0.2em] shadow-[0_20px_50px_rgba(37,99,235,0.4)] active:scale-95 transition-all overflow-hidden border border-blue-400/20"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:animate-shimmer"></div>
                 <span className="relative flex items-center justify-center">
-                  SUBMIT SUGGESTION
-                  <div className="ml-3 w-7 h-7 bg-white/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                  SUBMIT<span className="hidden sm:inline">&nbsp;SUGGESTION</span>
+                  <div className="ml-2 sm:ml-3 w-6 h-6 sm:w-7 sm:h-7 bg-white/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                   </div>
                 </span>
               </button>
               
               <button 
                 onClick={onNavigateTracking}
-                className="w-full sm:w-auto px-12 py-5 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-white rounded-[1.5rem] font-black text-xs sm:text-sm uppercase tracking-[0.2em] border-2 border-slate-200 dark:border-slate-800 active:scale-95 transition-all shadow-xl whitespace-nowrap flex items-center justify-center group"
+                className="flex-1 sm:flex-none sm:w-auto px-4 sm:px-12 py-5 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-white rounded-[1.5rem] font-black text-[10px] sm:text-sm uppercase tracking-[0.2em] border-2 border-slate-200 dark:border-slate-800 active:scale-95 transition-all shadow-xl whitespace-nowrap flex items-center justify-center group"
               >
-                TRACK MOVEMENT
-                <svg className="w-5 h-5 ml-3 text-blue-600 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" /></svg>
+                TRACK<span className="hidden sm:inline">&nbsp;MOVEMENT</span>
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2 sm:ml-3 text-blue-600 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" /></svg>
               </button>
             </div>
           </ScrollReveal>
